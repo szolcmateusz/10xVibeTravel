@@ -1,17 +1,18 @@
 # Tech Stack - VibeTravels
 
 ## Frontend
-- Angular 19 – Nowoczesny framework do tworzenia aplikacji webowych, który zapewnia wydajność, modularność i wsparcie dla testowania. Umożliwia tworzenie skalowalnych interfejsów użytkownika przy wsparciu silnego ekosystemu.
-- Tailwind CSS 4 – Narzędzie do stylowania, które pozwala na szybkie prototypowanie dzięki systemowi klas narzędziowych.
+- Angular 19 – a modern framework for building web applications that ensures performance, modularity, and support for testing. It enables the creation of scalable user interfaces with the support of a strong ecosystem.
+- Angular Material Design 3 - a modern UI component library for Angular.
+- Tailwind CSS 4 – a styling tool that allows for rapid prototyping using a utility-first class system.
 
 ## Backend
-- Supabase – Rozwiązanie typu Backend-as-a-Service oparte na PostgreSQL, oferujące wbudowane mechanizmy uwierzytelniania, zarządzania bazą danych oraz funkcje serwerowe. Umożliwia szybkie prototypowanie i skalowanie aplikacji.
+- Supabase – a Backend-as-a-Service solution based on PostgreSQL, offering built-in authentication mechanisms, database management, and server functions. It enables rapid prototyping and scaling of applications.
 
 ## AI
-- OpenRouter.ai – Platforma API umożliwiająca integrację funkcji sztucznej inteligencji, takich jak generowanie treści lub analizowanie danych. Umożliwia wykorzystanie modeli AI.
+- OpenRouter.ai – an API platform enabling the integration of artificial intelligence features, such as content generation or data analysis. It allows the use of AI models.
 
 ## CI/CD
-- Github Actions – Narzędzie automatyzujące procesy CI/CD, pozwalające na bezproblemowe wdrażanie kodu, testowanie i monitorowanie, dzięki czemu można szybko reagować na zmiany i utrzymywać wysoką jakość oprogramowania.
+- Github Actions – a tool that automates CI/CD processes, enabling seamless code deployment, testing, and monitoring, allowing for quick responses to changes and maintaining high software quality.
 
 ## Hosting
-- Azure Static Web Apps – Usługa hostingu zoptymalizowana pod kątem aplikacji statycznych, która zapewnia skalowalność, bezpieczeństwo i łatwą integrację z systemami CI/CD, ułatwiając szybkie wdrożenie i globalny dostęp do aplikacji.
+- Azure Static Web Apps – a hosting service optimized for static applications, providing scalability, security, and easy integration with CI/CD systems, facilitating quick deployment and global access to the application.

@@ -1,18 +1,18 @@
-### Główny problem
-Planowanie angażujących i interesujących wycieczek jest trudne. Dzięki wykorzystaniu potencjału, kreatywności i wiedzy AI, w VibeTravels możesz tworzyć konkretne plany wycieczek, a także dostać podpowiedzi o jakich rzeczach należy pamiętać, udając się w wybrane przez ciebie miejsce.
+### Main Problem
+Planning engaging and interesting trips is difficult. By leveraging the potential, creativity, and knowledge of AI, VibeTravels allows you to create specific trip plans and provides suggestions on what to keep in mind when traveling to your chosen destination.
 
-### Najmniejszy zestaw funkcjonalności
-- Zapisywanie, odczytywanie, przeglądanie, edycja i usuwanie planów wycieczek
-- Prosty system kont użytkowników do powiązania użytkownika z jego planami wycieczek
-- Lista wycieczek stworzonych przez użytkownika
-- Strona profilu użytkownika służąca do zapisywania preferencji turystycznych
-- Integracja z AI umożliwiająca tworzenie planów wycieczek, biorących pod uwagę preferencje, czas oraz liczbę osób
+### Minimum Viable Product (MVP) Features
+- Saving, reading, viewing, editing, and deleting trip plans
+- A simple user account system to associate users with their trip plans
+- A list of trips created by the user
+- A user profile page for saving travel preferences
+- AI integration for creating trip plans that consider preferences, time, and the number of people
 
-### Co NIE wchodzi w zakres MVP
-- Współdzielenie planów wycieczkowych między kontami
-- Dodawanie multimediów tj. zdjęć oraz filmów z podróży
-- Integracja z Google Maps
+### What is NOT Included in the MVP
+- Sharing trip plans between accounts
+- Adding multimedia such as photos and videos from trips
+- Integration with Google Maps
 
-### Kryteria sukcesu
-- 90% wygenerowanych planów przez AI jest akceptowanych przez Użytkowników
-- 75% użytkowników generuje 3 lub więcej planów wycieczek na rok
+### Success Criteria
+- 90% of AI-generated plans are accepted by users
+- 75% of users generate 3 or more trip plans per year
