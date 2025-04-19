@@ -1,59 +1,105 @@
-# 10xVibeTravel
+# 10x-Vibe-Travel
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.8.
+## Table of Contents
+- [Project Description](#project-description)
+- [Tech Stack](#tech-stack)
+- [Getting Started Locally](#getting-started-locally)
+- [Available Scripts](#available-scripts)
+- [Project Scope](#project-scope)
+- [Project Status](#project-status)
+- [License](#license)
 
-## Development server
+## Project Description
+10x-Vibe-Travel (VibeTravels) is an application designed to simplify trip planning by leveraging artificial intelligence to generate detailed and personalized travel plans. Users can register, log in, manage their profile (including setting travel preferences), and create, view, edit, or delete trip plans. A key feature is the integration with AI (via OpenRouter.ai) which provides unique trip plan suggestions based on user-selected criteria such as location, dates, and preferences.
 
-To start a local development server, run:
+## Tech Stack
+- **Frontend:** Angular 19, Angular Material Design 3, Tailwind CSS 4
+- **Backend:** Supabase
+- **AI Integration:** OpenRouter.ai
+- **CI/CD:** GitHub Actions
+- **Hosting:** Azure Static Web Apps
 
-```bash
-ng serve
-```
+## Getting Started Locally
+### Prerequisites
+- [Node.js](https://nodejs.org/) (version **22.14.0** as specified in the `.nvmrc`)
+- [Yarn](https://yarnpkg.com/) package manager
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/10x-vibe-travel.git
+   cd 10x-vibe-travel
+   ```
 
-## Code scaffolding
+2. Install dependencies:
+   ```bash
+   yarn install
+   ```
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+3. Start the development server:
+   ```bash
+   yarn start
+   ```
 
-```bash
-ng generate component component-name
-```
+## Available Scripts
+The following commands are available in the project:
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **Start the development server:**
+  ```bash
+  yarn start
+  ```
 
-```bash
-ng generate --help
-```
+- **Build the project:**
+  ```bash
+  yarn build
+  ```
 
-## Building
+- **Watch for file changes (development mode):**
+  ```bash
+  yarn watch
+  ```
 
-To build the project run:
+- **Run tests with Vitest:**
+  ```bash
+  yarn test
+  ```
 
-```bash
-ng build
-```
+- **Run tests with coverage reporting:**
+  ```bash
+  yarn test:coverage
+  ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- **Run tests in watch mode:**
+  ```bash
+  yarn test:watch
+  ```
 
-## Running unit tests
+- **Run tests in CI mode:**
+  ```bash
+  yarn test:ci
+  ```
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+- **Lint the project:**
+  ```bash
+  yarn lint
+  ```
 
-```bash
-ng test
-```
+- **Automatically fix lint issues:**
+  ```bash
+  yarn lint:fix
+  ```
 
-## Running end-to-end tests
+## Project Scope
+The MVP of 10x-Vibe-Travel includes:
 
-For end-to-end (e2e) testing, run:
+- **User Account System:** Registration, login, profile management, and secure JWT authentication with automatic token refresh.
+- **Trip Plan Management:** Create, edit, view, and delete travel plans.
+- **AI Integration:** Generate trip plans using user input (location, dates, preferences) with manual initiation.
+- **Confirmation Popup:** Users receive a confirmation prompt when an AI-generated plan is presented, indicating that a confirmed plan cannot be edited.
+- **User Preference Management:** Manage travel preferences including options like Cultural Tourism, Nature and Ecotourism, Relaxation Tourism, Adventure and Active Tourism, Gastronomic Tourism, and Health and Wellness Tourism.
 
-```bash
-ng e2e
-```
+## Project Status
+The project is under active development. Core functionalities such as user management, trip planning, and AI integration are implemented as defined in the requirements document. Future work will include refining the AI-generated plans and further enhancements based on user feedback.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## License
+This project is licensed under the MIT License.
