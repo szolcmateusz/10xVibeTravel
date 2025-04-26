@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD) - VibeTravels
 
 ## 1. Product Overview
-VibeTravels is an application that enables planning engaging and interesting trips using artificial intelligence. The application allows users to create, edit, view, and delete travel plans, as well as manage their profile, including specifying travel preferences. A key element of the product is AI integration, which generates detailed trip plan suggestions based on selected criteria such as location, dates, and user preferences.
+VibeTravels is an application that enables planning engaging and interesting trips using artificial intelligence. The application allows users to create, edit, view, and delete travel plans. A key element of the product is AI integration, which generates detailed trip plan suggestions based on selected criteria such as location, dates, and user preferences.
 
 ## 2. User Problem
 Planning engaging and interesting trips is challenging. Users often don't know where to start or what elements to consider when organizing a trip. They lack a tool that combines information about preferences, time, and the number of people while leveraging AI's potential to generate a comprehensive travel plan. VibeTravels aims to simplify the planning process and increase user satisfaction by offering personalized and well-thought-out trip plans.
@@ -19,8 +19,6 @@ Planning engaging and interesting trips is challenging. Users often don't know w
    - The generation process must be manually initiated by the user.
 4. Confirmation Popup:
    - After the AI generates a plan, the user receives a popup with options "Confirm" and "Cancel" along with a clear message that the confirmed plan cannot be edited.
-5. User Profile Management:
-   - A profile page allowing the selection of travel preferences from the list: Cultural Tourism, Nature and Ecotourism, Relaxation Tourism, Adventure and Active Tourism, Gastronomic Tourism, and Health and Wellness Tourism.
 
 ## 4. Product Boundaries
 - The functionality of sharing trip plans between accounts is not included in the MVP.
@@ -49,16 +47,7 @@ Acceptance Criteria:
 - After successful login, the user is redirected to the application's main page.
 
 ### US-003
-ID: US-003  
-Title: Managing User Profile and Selecting Travel Preferences  
-Description: The user can manage their profile and select travel preferences from an available list (dropdown).  
-Acceptance Criteria:
-- The user sees a profile page with an option to select preferences.
-- The dropdown contains all required options: Cultural Tourism, Nature and Ecotourism, Relaxation Tourism, Adventure and Active Tourism, Gastronomic Tourism, Health and Wellness Tourism.
-- The user can save and update their preferences.
-
-### US-004
-ID: US-004  
+ID: US-003 
 Title: Adding a New Trip  
 Description: The user creates a new trip by providing the location, dates, and selecting travel preferences.  
 Acceptance Criteria:
@@ -66,8 +55,8 @@ Acceptance Criteria:
 - The user must provide required data (location, dates, preferences).
 - After saving the trip, a confirmation message is displayed, and the new trip appears on the list.
 
-### US-005
-ID: US-005  
+### US-004
+ID: US-004 
 Title: Generating a Trip Plan Using AI  
 Description: The user initiates the process of generating a trip plan using the built-in AI function, which considers location, dates, and preferences.  
 Acceptance Criteria:
@@ -75,8 +64,8 @@ Acceptance Criteria:
 - The system sends a request to the AI module with the user's data.
 - The generated trip plan is presented to the user for acceptance or rejection.
 
-### US-006
-ID: US-006  
+### US-005
+ID: US-005
 Title: Accepting or Rejecting a Trip Plan  
 Description: After the AI generates a plan, the user decides whether to accept or reject it.  
 Acceptance Criteria:
@@ -85,8 +74,8 @@ Acceptance Criteria:
 - Accepting the plan saves the final version of the plan in the system.
 - In case of rejection, the user can manually trigger a new plan generation.
 
-### US-007
-ID: US-007  
+### US-006
+ID: US-006
 Title: Editing and Deleting Trips  
 Description: The user can edit or delete existing trip plans.  
 Acceptance Criteria:
@@ -95,8 +84,8 @@ Acceptance Criteria:
 - Changes are saved and reflected in the system immediately.
 - Deleting a trip requires confirmation of the operation.
 
-### US-008
-ID: US-008  
+### US-007
+ID: US-007
 Title: Automatic JWT Token Refresh  
 Description: The system must automatically refresh the user's JWT token just before it expires to ensure session continuity and log events for audit purposes.  
 Acceptance Criteria:
