@@ -75,7 +75,7 @@
 
 ## 3. Authentication & Authorization
 
-- Mechanism: JWT with access (1h) and refresh tokens
+- Mechanism: Token-based authentication using Supabase Auth
 - Enforcement: `Authorization: Bearer <token>` header
 - RLS: Supabase policies ensure users only access their own `trip_plans`
 
