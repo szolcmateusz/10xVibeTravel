@@ -47,7 +47,7 @@
     "date_from": "YYYY-MM-DD", 
     "date_to": "YYYY-MM-DD",   
     "location": "string",       
-    "preferences": ["preference1", "preference2"],      
+    "preferences_list": "preference1;preference2",      
     "number_of_people": int      
     "trip_plan_description": "string",
     "ai_plan_accepted": boolean
