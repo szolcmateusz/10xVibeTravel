@@ -1,4 +1,4 @@
-# PostgreSQL Database Schema for 10xGains
+# PostgreSQL Database Schema for 10xVibeTravel
 
 ## 1. Tables 
 

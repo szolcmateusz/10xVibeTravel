@@ -22,14 +22,12 @@
 - Query Parameters:
   - `page` (integer, default 1)
   - `limit` (integer, default 20)
-  - `sortBy` (string: "date_from", "location")
-  - `order` (string: "asc","desc")
 - Response 200 OK:
   {
     "data": [
       { "id": "UUID", "date_from": "YYYY-MM-DD", "date_to": "YYYY-MM-DD", "location":"string" }
     ],
-    "meta": { "page": 1, "limit": 20, "total": 50 }
+    "pagination": { "page": 1, "limit": 20, "total": 50 }
   }
 
 #### GET /api/trip-plans/{id}
