@@ -104,6 +104,7 @@ For all other elements, use the standard rules and good practices for Angular, a
 - Implement dark mode with the dark: variant
 - Use responsive variants (sm:, md:, lg:, etc.) for adaptive designs
 - Leverage state variants (hover:, focus:, active:, etc.) for interactive elements
+- Do not use css custom classes, use predefined Tailwind classes instead.
 
 ### Guidelines for VERSION_CONTROL
 
