@@ -4,13 +4,21 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const MATERIAL_MODULES = [
   MatButtonModule,
   MatCardModule,
   MatProgressSpinnerModule,
   MatPaginatorModule,
-  MatIconModule
+  MatIconModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  MatDialogModule
 ];
 
 @NgModule({
