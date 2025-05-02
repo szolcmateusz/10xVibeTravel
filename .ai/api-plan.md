@@ -31,7 +31,7 @@
   }
 
 #### GET /api/trip-plans/{id}
-- Description: Retrieve specific trip plan
+- Description: Retrieve specific trip plan The `{id}` must match the trip plan id that belongs to authenticated user.
 - Response 200 OK:
   { "id": "UUID", "user_id":"UUID", "date_from":"YYYY-MM-DD", "date_to":"YYYY-MM-DD", "location":"string", "preferences_list":"string;...","number_of_people":int, "trip_plan_description":"string", "ai_plan_accepted":bool }
 - Errors:
