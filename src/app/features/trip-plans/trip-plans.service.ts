@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { TripPlanSummaryDto, TripPlanSummaryListDto, TripPlanDetailDto, CreateTripPlanCommand } from '../../../api.types';
+import { TripPlanSummaryDto, TripPlanSummaryListDto, TripPlanDetailDto, CreateTripPlanCommand, PreferenceDto } from '../../../api.types';
 import { SupabaseService } from '../../shared/db/supabase.service';
 
 @Injectable({
@@ -168,6 +168,23 @@ export class TripPlansService {
         throw error;
       }
       throw new Error('Failed to create trip plan');
+    }
+  }
+
+  async getPreferences(): Promise<PreferenceDto[]> {
+    try {
+      const { data, error } = await this.client
+        .from('preferences')
+        .select('id, name')
+        .order('name');
+
+      if (error) throw error;
+      if (!data) throw new Error('No data returned');
+
+      return data as PreferenceDto[];
+    } catch (error) {
+      console.error('Error fetching preferences:', error);
+      throw new Error('Failed to fetch preferences');
     }
   }
 }
