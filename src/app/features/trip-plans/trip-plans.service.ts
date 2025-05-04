@@ -187,4 +187,40 @@ export class TripPlansService {
       throw new Error('Failed to fetch preferences');
     }
   }
+
+  async deleteTripPlan(id: string): Promise<void> {
+    // Validate UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(id)) {
+      throw new Error('Invalid trip plan ID format');
+    }
+
+    // Get the authenticated user's ID
+    const { data: { user } } = await this.client.auth.getUser();
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+
+    try {
+      const { error } = await this.client
+        .from('trip_plans')
+        .delete()
+        .eq('id', id)
+        .eq('user_id', user.id)
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') {
+          throw new Error('Trip plan not found');
+        }
+        throw error;
+      }
+    } catch (error) {
+      console.error('Error deleting trip plan:', error);
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('Failed to delete trip plan');
+    }
+  }
 }
