@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { TripPlanSummaryDto, TripPlanSummaryListDto, TripPlanDetailDto } from '../../../api.types';
+import { TripPlanSummaryDto, TripPlanSummaryListDto, TripPlanDetailDto, CreateTripPlanCommand } from '../../../api.types';
 import { SupabaseService } from '../../shared/db/supabase.service';
 
 @Injectable({
@@ -100,6 +100,74 @@ export class TripPlansService {
         throw error;
       }
       throw new Error('Failed to fetch trip plan');
+    }
+  }
+
+  async createTripPlan(command: CreateTripPlanCommand): Promise<TripPlanDetailDto> {
+    // Input validation
+    if (new Date(command.date_to) < new Date(command.date_from)) {
+      throw new Error('End date must be after start date');
+    }
+
+    if (command.location.length > 100) {
+      throw new Error('Location must not exceed 100 characters');
+    }
+
+    if (command.number_of_people <= 0 || command.number_of_people > 100) {
+      throw new Error('Number of people must be between 1 and 100');
+    }
+
+    if (command.trip_plan_description.length > 1000) {
+      throw new Error('Trip plan description must not exceed 1000 characters');
+    }
+
+    // Get the authenticated user's ID
+    const { data: { user } } = await this.client.auth.getUser();
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+
+    try {
+      // Validate preferences exist in the preferences table
+      if (command.preferences_list) {
+        const preferences = command.preferences_list.split(';');
+        const { data: validPreferences, error: preferencesError } = await this.client
+          .from('preferences')
+          .select('name')
+          .in('name', preferences);
+
+        if (preferencesError) {
+          throw new Error('Failed to validate preferences');
+        }
+
+        const validPreferenceNames = validPreferences.map(p => p.name);
+        const invalidPreferences = preferences.filter(p => !validPreferenceNames.includes(p));
+        
+        if (invalidPreferences.length > 0) {
+          throw new Error(`Invalid preferences: ${invalidPreferences.join(', ')}`);
+        }
+      }
+
+      // Insert the trip plan
+      const { data, error } = await this.client
+        .from('trip_plans')
+        .insert({
+          ...command,
+          user_id: user.id
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+      if (!data) throw new Error('Failed to create trip plan');
+
+      return data as TripPlanDetailDto;
+    } catch (error) {
+      console.error('Error creating trip plan:', error);
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('Failed to create trip plan');
     }
   }
 }
