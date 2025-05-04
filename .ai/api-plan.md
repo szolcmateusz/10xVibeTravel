@@ -50,8 +50,7 @@
     "trip_plan_description": "string",
     "ai_plan_accepted": boolean
   }
-- Response 201 Created:
-  { "id": "UUID" }
+- Response 201 Created
 - Errors:
   - 400 Bad Request
 
