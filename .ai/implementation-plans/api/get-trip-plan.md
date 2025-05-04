@@ -69,7 +69,7 @@ Pobranie szczegółów pojedynczego planu podróży.
 
 ## 9. Kroki implementacji
 1. Utworzyć serwis (src/app/features/trip-plans/trip-plans.service.ts) jeśli nie istnieje.
-2. Walidować `id` jako UUID we wstępie handlera.
+2. Walidować `id` jako UUID we wstępie metody serwisu.
 3. Zaimplementować logikę w `TripPlansService.getById(id, userId)`.
 4. Mapować wynik na TripPlanDetailDto.
 5. Dodać mechanizmy obsługi błędów.
