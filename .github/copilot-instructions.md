@@ -78,6 +78,7 @@ For all other elements, use the standard rules and good practices for Angular, a
 - Enforce kebab-case naming for files (e.g., `user-profile.component.ts`) and match Angular's conventions for file suffixes (e.g., `.component.ts`, `.service.ts`, etc.).
 - Define data models using interfaces for explicit types and maintain strict typing to avoid `any`.
 - Avoid using `any`; instead, use TypeScript's type system to define specific types and ensure code reliability and ease of refactoring.
+- Use separate files to implement the components. One file should be the .html template of the component, while the other file should be the .ts class of the component.
 
 #### ANGULAR_MATERIAL
 
