@@ -93,6 +93,14 @@ Acceptance Criteria:
 - The system automatically refreshes the token before expiration.
 - Each token refresh event is logged in the audit system.
 
+### US-008
+ID: US-008
+Title: Listing of trip plans created  
+Description: The user can view the trip plans he or she has created in the form of a list.
+Acceptance Criteria:
+- The user has access to a list of their trips.
+- Trip plans are displayed in a paginated list.
+
 ## 6. Success Metrics
 1. 90% of AI-generated trip plans must be accepted by users, measured by the number of "accept" button clicks.
 2. 75% of users should generate at least 3 trip plans annually, monitored through the usage analytics system.
