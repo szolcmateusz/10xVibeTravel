@@ -1,10 +1,11 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TripPlansService } from './trip-plans.service';
-import { TripPlanSummaryListDto } from '../../../api.types';
+import { TripPlanSummaryDto, TripPlanSummaryListDto } from '../../../api.types';
 import { MaterialModule } from '../../shared/material/material';
 import { PageEvent } from '@angular/material/paginator';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { ConfirmationDialogService } from '../../shared/services/confirmation-dialog.service';
 
 @Component({
   selector: 'trv-trip-plans',
@@ -45,7 +46,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
                   <mat-icon>edit</mat-icon>
                   Edit
                 </button>
-                <button mat-button color="warn">
+                <button mat-button color="warn" (click)="handleDelete(plan)">
                   <mat-icon>delete</mat-icon>
                   Delete
                 </button>
@@ -118,6 +119,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 })
 export class TripPlansComponent implements OnInit {
   private readonly tripPlansService = inject(TripPlansService);
+  private readonly confirmationDialog = inject(ConfirmationDialogService);
   
   tripPlans = signal<TripPlanSummaryListDto | null>(null);
   loading = signal(false);
@@ -129,6 +131,28 @@ export class TripPlansComponent implements OnInit {
 
   async handlePageEvent(event: PageEvent): Promise<void> {
     await this.loadPage(event.pageIndex + 1, event.pageSize);
+  }
+
+  async handleDelete(plan: TripPlanSummaryDto): Promise<void> {
+    const confirmed = await this.confirmationDialog.confirm({
+      title: 'Delete Trip Plan',
+      message: 'Are you sure you want to delete this trip plan? This action cannot be undone.',
+      confirmText: 'Delete'
+    });
+
+    if (!confirmed) return;
+
+    try {
+      this.loading.set(true);
+      this.error.set(null);
+      
+      await this.tripPlansService.deleteTripPlan(plan.id);
+      await this.loadPage(this.tripPlans()?.pagination.page ?? 1);
+    } catch (err) {
+      this.error.set(err instanceof Error ? err.message : 'An error occurred while deleting the trip plan');
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   private async loadPage(page = 1, limit = 20): Promise<void> {
