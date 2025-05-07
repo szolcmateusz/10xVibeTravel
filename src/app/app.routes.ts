@@ -13,5 +13,9 @@ export const routes: Routes = [
     path: '',
     pathMatch: 'full',
     redirectTo: 'trips'
+  },
+  {
+    path: '**',
+    redirectTo: 'trips'
   }
 ];

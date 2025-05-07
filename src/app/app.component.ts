@@ -5,8 +5,7 @@ import { RouterOutlet } from '@angular/router';
   selector: 'trv-root',
   standalone: true,
   imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
   title = '10x-vibe-travel';
