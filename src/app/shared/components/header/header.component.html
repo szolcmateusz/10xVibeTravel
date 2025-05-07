@@ -1,0 +1,17 @@
+@if (isAuthenticated()) {
+  <mat-toolbar class="bg-primary text-white">
+    <span class="text-lg font-medium">VibeTravels</span>
+    <span class="flex-1"></span>
+    <button mat-button (click)="handleLogout()" [disabled]="isLoading()">
+      @if (isLoading()) {
+        <mat-spinner diameter="20" class="mr-2" />
+        <span>Logging out...</span>
+      } @else {
+        <ng-container>
+          <mat-icon class="mr-1">logout</mat-icon>
+          <span>Logout</span>
+        </ng-container>
+      }
+    </button>
+  </mat-toolbar>
+}
