@@ -1,0 +1,90 @@
+<div class="flex justify-center min-h-screen bg-gray-100">
+  <div class="container mx-auto px-4 py-8 max-w-2xl">
+    <h1 class="text-2xl font-bold mb-6">Create Trip Plan</h1>
+    
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>From Date</mat-label>
+          <input matInput [matDatepicker]="fromPicker" formControlName="dateFrom">
+          <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
+          <mat-datepicker #fromPicker></mat-datepicker>
+          @if (form.get('dateFrom')?.errors?.['required'] && form.get('dateFrom')?.touched) {
+            <mat-error>From date is required</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>To Date</mat-label>
+          <input matInput [matDatepicker]="toPicker" formControlName="dateTo">
+          <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
+          <mat-datepicker #toPicker></mat-datepicker>
+          @if (form.get('dateTo')?.errors?.['required'] && form.get('dateTo')?.touched) {
+            <mat-error>To date is required</mat-error>
+          }
+          @if (form.get('dateTo')?.errors?.['dateToBeforeFrom']) {
+            <mat-error>To date must be after from date</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Location</mat-label>
+        <input matInput formControlName="location" placeholder="Enter destination">
+        @if (form.get('location')?.errors?.['required'] && form.get('location')?.touched) {
+          <mat-error>Location is required</mat-error>
+        }
+        @if (form.get('location')?.errors?.['maxlength']) {
+          <mat-error>Location must be less than 100 characters</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Number of People</mat-label>
+        <input matInput type="number" formControlName="numberOfPeople" min="1" max="100">
+        @if (form.get('numberOfPeople')?.errors?.['required'] && form.get('numberOfPeople')?.touched) {
+          <mat-error>Number of people is required</mat-error>
+        }
+        @if (form.get('numberOfPeople')?.errors?.['min'] || form.get('numberOfPeople')?.errors?.['max']) {
+          <mat-error>Number must be between 1 and 100</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="space-y-2">
+        <p class="text-lg font-medium">Travel Preferences</p>
+        <trv-preferences-checkbox-list
+          [preferences]="preferences()"
+          [selectedPreferences]="form.get('selectedPreferences')?.value ?? []"
+          (selectionChange)="onPreferencesChange($event)">
+        </trv-preferences-checkbox-list>
+        @if (form.get('selectedPreferences')?.errors?.['required'] && form.get('selectedPreferences')?.touched) {
+          <mat-error class="text-sm">Please select at least one preference</mat-error>
+        }
+      </div>
+
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Trip Plan Description</mat-label>
+        <textarea matInput formControlName="tripPlanDescription" rows="6" placeholder="Enter trip plan details"></textarea>
+        @if (form.get('tripPlanDescription')?.errors?.['required'] && form.get('tripPlanDescription')?.touched) {
+          <mat-error>Description is required</mat-error>
+        }
+        @if (form.get('tripPlanDescription')?.errors?.['maxlength']) {
+          <mat-error>Description must be less than 1000 characters</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="flex justify-between space-x-4">
+        <button mat-raised-button color="primary" type="button" 
+                [disabled]="form.invalid || loadingAi()"
+                (click)="onGenerateAi()">
+          Generate with AI
+        </button>
+        <button mat-raised-button color="accent" type="submit" [disabled]="form.invalid">
+          Save Trip Plan
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<trv-spinner-overlay [active]="loadingAi()"></trv-spinner-overlay>

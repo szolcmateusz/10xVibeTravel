@@ -1,52 +1,37 @@
-import { Injectable, inject } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatDialogConfig } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
-import { MaterialModule } from '../material/material';
-import { Component, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmationDialogComponent } from '../components/confirmation-dialog/confirmation-dialog.component';
 
-@Component({
-  selector: 'trv-confirmation-dialog',
-  standalone: true,
-  imports: [CommonModule, MaterialModule],
-  template: `
-    <h2 mat-dialog-title>{{ data.title }}</h2>
-    <mat-dialog-content>{{ data.message }}</mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-raised-button color="warn" [mat-dialog-close]="true">{{ data.confirmText }}</button>
-    </mat-dialog-actions>
-  `
-})
-export class ConfirmationDialogComponent {
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { title: string; message: string; confirmText: string }
-  ) {}
+interface ConfirmDialogData {
+  title: string;
+  message: string;
+  details?: string;
+  confirmText?: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfirmationDialogService {
-  private dialog = inject(MatDialog);
+  constructor(
+    private readonly dialog: MatDialog,
+    private readonly snackBar: MatSnackBar
+  ) {}
 
-  public confirm(options: { 
-    title: string; 
-    message: string; 
-    confirmText?: string;
-  }): Promise<boolean> {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      title: options.title,
-      message: options.message,
-      confirmText: options.confirmText || 'Confirm'
-    };
-    dialogConfig.width = '400px';
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = false;
+  async confirm(data: ConfirmDialogData): Promise<boolean> {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data,
+      width: '400px'
+    });
 
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, dialogConfig);
+    return await dialogRef.afterClosed().toPromise() ?? false;
+  }
 
-    return dialogRef.afterClosed().toPromise() || Promise.resolve(false);
+  showError(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 5000,
+      panelClass: ['error-snackbar']
+    });
   }
 }

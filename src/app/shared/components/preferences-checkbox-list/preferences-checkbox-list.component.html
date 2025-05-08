@@ -1,0 +1,10 @@
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+  @for (preference of preferences; track preference.id) {
+    <mat-checkbox 
+      [checked]="selectedPreferences.includes(preference.name)"
+      (change)="onCheckboxChange(preference.name, $event.checked)"
+      class="text-sm">
+      {{ preference.name }}
+    </mat-checkbox>
+  }
+</div>
