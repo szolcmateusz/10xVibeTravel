@@ -2,7 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { EnvironmentService } from './environment.service';
 import { z } from 'zod';
-import { ChatResponse, OpenRouterError, ValidationError, AuthenticationError, RateLimitError } from '../../../api.types';
+import { ChatResponse, OpenRouterError, ValidationError, AuthenticationError, RateLimitError, ChatMessage, CreateTripPlanCommand } from '../../../api.types';
+import { TripPlanSchema } from '../../../api.types';
 
 interface ModelsResponse {
   models: { id: string }[];
@@ -50,6 +51,45 @@ export class OpenRouterService {
       return this.validateResponse(response, schema);
     } catch (error) {
       throw this.handleError(error);
+    }
+  }
+
+  async generateTripPlan(command: CreateTripPlanCommand): Promise<ChatResponse<{ itinerary: string[]; summary: string }>> {
+    const messages: ChatMessage[] = [
+      {
+        role: 'system',
+        content: 'You are a travel planning assistant. Generate a detailed itinerary and summary based on the user\'s preferences.'
+      },
+      {
+        role: 'user',
+        content: `Please create a travel plan for ${command.location} from ${command.date_from} to ${command.date_to} for ${command.number_of_people} people. 
+                 Preferences: ${command.preferences_list}`
+      }
+    ];
+
+    const response = await fetch(this.baseUrl + '/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${this.apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'mistralai/mixtral-8x7b-instruct',
+        messages
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to generate AI plan');
+    }
+
+    const data = await response.json();
+    const content = data.choices[0].message.content;
+    
+    try {
+      return TripPlanSchema.parse(JSON.parse(content));
+    } catch (error) {
+      throw new Error('Invalid AI response format');
     }
   }
 
