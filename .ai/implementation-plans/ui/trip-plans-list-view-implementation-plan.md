@@ -4,11 +4,11 @@
 Widok pozwala użytkownikowi przeglądać zapisane plany podróży w formie tabeli z paginacją, umożliwia edycję i usuwanie pozycji oraz obsługuje stany ładowania, błędu i pustego zestawu danych.
 
 ## 2. Routing widoku
-- Ścieżka: `/trip-plans`
+- Ścieżka: `/trips`
 - Lazy loading w `src/app/app.routes.ts`:
   ```ts
   {
-    path: 'trip-plans',
+    path: 'trips',
     loadChildren: () => import('./features/trip-plans/routes').then(m => m.TRIP_PLANS_ROUTES),
     canActivate: [AuthGuard]
   }
@@ -68,8 +68,9 @@ TripPlansComponent
 ## 8. Interakcje użytkownika
 1. Załadowanie widoku → `ngOnInit` → `loadPage(1)`.
 2. Zmiana strony → `handlePageEvent` → `loadPage(newPage, newLimit)`.
-3. Kliknięcie “Edit” → nawigacja do `/trip-plans/{id}/edit`.
-4. Kliknięcie “Delete” → dialog potwierdzający → usunięcie → ponowne ładowanie.
+3. Kliknięcie “Edit” → nawigacja do `/trips/{id}/edit`.
+4. Kliknięcie Details → nawigacja do `/trips/{id}`.
+5. Kliknięcie “Delete” → dialog potwierdzający → usunięcie → ponowne ładowanie.
 
 ## 9. Warunki i walidacja
 - Parametry `page` i `limit` w paginacji.
@@ -82,7 +83,7 @@ TripPlansComponent
 - Timeout/Brak sieci → przyjazny komunikat.
 
 ## 11. Kroki implementacji
-1. Utworzyć `src/app/features/trip-plans/routes.ts` z lazy loading.
+1. Utworzyć `src/app/features/trips/routes.ts` z lazy loading.
 2. Zaimplementować TripPlansComponent (sygnały, template, style).
 3. Uzupełnić TripPlansService metodami GET i DELETE, jeśli brak.
 4. Skonfigurować ConfirmationDialogService.

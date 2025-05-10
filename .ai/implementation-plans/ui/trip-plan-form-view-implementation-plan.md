@@ -4,18 +4,18 @@
 Widok „Trip Plan Form” umożliwia tworzenie oraz edycję planów podróży. Użytkownik wypełnia pola dat, lokalizacji, liczby osób, wybiera preferencje, wpisuje opis, a następnie może wygenerować propozycję AI lub zapisać plan.
 
 ## 2. Routing widoku
-- `/trip-plans/create` – tworzenie nowego planu
-- `/trip-plans/:id/edit` – edycja istniejącego planu
+- `/trips/create` – tworzenie nowego planu
+- `/trips/:id/edit` – edycja istniejącego planu
 
 Konfiguracja w `src/app/app.routes.ts`:
 ```ts
 {
-  path: 'trip-plans/create',
+  path: 'trips/create',
   loadComponent: () => import('./features/trip-plans/trip-plan-form.component').then(m => m.TripPlanFormComponent),
   canActivate: [AuthGuard]
 },
 {
-  path: 'trip-plans/:id/edit',
+  path: 'trips/:id/edit',
   loadComponent: () => import('./features/trip-plans/trip-plan-form.component').then(m => m.TripPlanFormComponent),
   canActivate: [AuthGuard]
 }
@@ -92,7 +92,7 @@ interface CreateTripPlanViewModel {
     location: ['', [Validators.required, Validators.maxLength(100)]],
     numberOfPeople: [1, [Validators.required, Validators.min(1), Validators.max(100)]],
     selectedPreferences: [[], Validators.required],
-    tripPlanDescription: ['', [Validators.required, Validators.maxLength(1000)]]
+    tripPlanDescription: ['', [Validators.required]]
   });
   const loadingAi = signal(false);
   ```
