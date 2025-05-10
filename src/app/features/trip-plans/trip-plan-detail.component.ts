@@ -32,56 +32,7 @@ interface TripPlanDetailViewModel {
     SpinnerOverlayComponent,
     ErrorViewComponent
   ],
-  template: `
-    @if (error()) {
-      <trv-error-view [code]="error() ?? 'unknown'" />
-    }
-    @if (isLoading()) {
-      <trv-spinner-overlay />
-    }
-    @if (!isLoading() && !error() && tripDetail()) {
-      <mat-card class="p-6">
-        <mat-card-header>
-          <mat-card-title>{{ tripDetail()!.location }}</mat-card-title>
-          <mat-card-subtitle>
-            {{ tripDetail()!.dateFrom | date }} - {{ tripDetail()!.dateTo | date }}
-          </mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content class="mt-4">
-          <div class="grid gap-4">
-            <div>
-              <strong class="text-gray-700">Number of people:</strong>
-              <p>{{ tripDetail()!.numberOfPeople }}</p>
-            </div>
-            <div>
-              <strong class="text-gray-700">Preferences:</strong>
-              <div class="flex flex-wrap gap-2 mt-2">
-                @for (preference of tripDetail()!.preferences; track preference) {
-                  <span class="px-3 py-1 text-sm bg-primary-100 text-primary-700 rounded-full">
-                    {{ preference }}
-                  </span>
-                }
-              </div>
-            </div>
-            <div>
-              <strong class="text-gray-700">Description:</strong>
-              <p class="mt-2 whitespace-pre-wrap">{{ tripDetail()!.description }}</p>
-            </div>
-          </div>
-        </mat-card-content>
-        <mat-card-actions class="flex justify-end gap-4">
-          @if (!tripDetail()!.aiPlanAccepted) {
-            <button mat-raised-button color="primary" (click)="onEdit()">
-              Edit
-            </button>
-          }
-          <button mat-stroked-button color="warn" (click)="onDelete()">
-            Delete
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    }
-  `,
+  templateUrl: './trip-plan-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TripPlanDetailComponent {
