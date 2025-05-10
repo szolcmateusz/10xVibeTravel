@@ -6,12 +6,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Router } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
+import { Router, ActivatedRoute } from '@angular/router';
 import { signal, inject } from '@angular/core';
 import { TripPlansService } from './trip-plans.service';
 import { OpenRouterService } from '../../shared/services/open-router.service';
 import { ConfirmationDialogService } from '../../shared/services/confirmation-dialog.service';
-import { CreateTripPlanCommand, PreferenceDto } from '../../../api.types';
+import { CreateTripPlanCommand, PreferenceDto, TripPlanDetailDto } from '../../../api.types';
 import { PreferencesCheckboxListComponent } from '../../shared/components/preferences-checkbox-list/preferences-checkbox-list.component';
 import { SpinnerOverlayComponent } from '../../shared/components/spinner-overlay/spinner-overlay.component';
 
@@ -27,6 +28,7 @@ import { SpinnerOverlayComponent } from '../../shared/components/spinner-overlay
     MatDatepickerModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
+    MatCardModule,
     PreferencesCheckboxListComponent,
     SpinnerOverlayComponent
   ],
@@ -38,6 +40,7 @@ export class TripPlanFormComponent {
   private readonly dialogService = inject(ConfirmationDialogService);
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   readonly form = this.formBuilder.group({
     dateFrom: ['', Validators.required],
@@ -45,14 +48,42 @@ export class TripPlanFormComponent {
     location: ['', [Validators.required, Validators.maxLength(100)]],
     numberOfPeople: [1, [Validators.required, Validators.min(1), Validators.max(100)]],
     selectedPreferences: [[] as string[], [Validators.required, this.preferencesValidator]],
-    tripPlanDescription: ['', [Validators.required, Validators.maxLength(1000)]]
+    tripPlanDescription: ['', [Validators.required]]
   });
 
   readonly loadingAi = signal(false);
   readonly preferences = signal<PreferenceDto[]>([]);
+  readonly isEdit = signal(false);
+  readonly loading = signal(true);
+  readonly error = signal<string | null>(null);
 
   constructor() {
-    this.loadPreferences();
+    this.init();
+  }
+
+  private async init(): Promise<void> {
+    try {
+      await this.loadPreferences();
+      
+      const tripId = this.route.snapshot.paramMap.get('id');
+      if (tripId) {
+        this.isEdit.set(true);
+        const tripPlan = await this.tripPlansService.getTripPlanById(tripId);
+        this.form.patchValue({
+          dateFrom: tripPlan.date_from,
+          dateTo: tripPlan.date_to,
+          location: tripPlan.location,
+          numberOfPeople: tripPlan.number_of_people,
+          selectedPreferences: tripPlan.preferences_list ? tripPlan.preferences_list.split(';') : [],
+          tripPlanDescription: tripPlan.trip_plan_description
+        });
+      }
+    } catch (error) {
+      this.error.set(error instanceof Error ? error.message : 'Failed to load trip plan');
+      this.dialogService.showError(this.error() ?? 'An error occurred');
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   private async loadPreferences(): Promise<void> {
@@ -91,18 +122,24 @@ export class TripPlanFormComponent {
 
     this.loadingAi.set(true);
     try {
-      const formValue = this.form.value as CreateTripPlanCommand;
-      const aiResponse = await this.openRouterService.generateTripPlan(formValue);
-      
+      const formValue = this.form.value;
+      const aiResponse = await this.openRouterService.generateTripPlan(
+        formValue.dateFrom as string,
+        formValue.dateTo as string, 
+        formValue.location as string, 
+        formValue.numberOfPeople as number, 
+        (formValue.selectedPreferences as string[]).join(', ')
+      );
+
       const shouldAccept = await this.dialogService.confirm({
         title: 'AI Generated Plan',
-        message: aiResponse.summary,
-        details: aiResponse.itinerary.join('\n')
+        message: formValue.location as string,
+        details: aiResponse
       });
 
       if (shouldAccept) {
         this.form.patchValue({
-          tripPlanDescription: aiResponse.itinerary.join('\n')
+          tripPlanDescription: aiResponse
         });
       }
     } catch (_error) {
@@ -118,11 +155,26 @@ export class TripPlanFormComponent {
     }
 
     try {
-      const formValue = this.form.value as CreateTripPlanCommand;
-      await this.tripPlansService.createTripPlan(formValue);
-      this.router.navigate(['/trip-plans']);
+      const formValue = this.form.value;
+      const selectedPreferences = formValue.selectedPreferences?.join(';');
+      const command: CreateTripPlanCommand = {
+        date_from: new Date(formValue.dateFrom as string).toLocaleDateString(),
+        date_to: new Date(formValue.dateTo as string).toLocaleDateString(),
+        location: formValue.location as string,
+        number_of_people: formValue.numberOfPeople as number,
+        preferences_list: selectedPreferences as string,
+        trip_plan_description: formValue.tripPlanDescription as string
+      };
+
+      if (this.isEdit()) {
+        await this.tripPlansService.updateTripPlan(this.route.snapshot.paramMap.get('id') as string, command);
+      } else {
+        await this.tripPlansService.createTripPlan(command);
+      }
+      
+      this.router.navigate(['/trips']);
     } catch (_error) {
-      this.dialogService.showError('Failed to create trip plan');
+      this.dialogService.showError(`Failed to ${this.isEdit() ? 'update' : 'create'} trip plan`);
     }
   }
 }

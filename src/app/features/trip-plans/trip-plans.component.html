@@ -26,8 +26,8 @@
               {{ plan.date_from | date:'mediumDate' }} - {{ plan.date_to | date:'mediumDate' }}
             </mat-card-subtitle>
           </mat-card-header>
-          <mat-card-actions align="end" class="mt-auto">
-            <button mat-button color="primary">
+          <mat-card-actions align="end" class="mt-auto">            
+            <button mat-button color="primary" (click)="handleEdit(plan)">
               <mat-icon>edit</mat-icon>
               Edit
             </button>

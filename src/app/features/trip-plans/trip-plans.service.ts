@@ -170,6 +170,90 @@ export class TripPlansService {
     }
   }
 
+  async updateTripPlan(id: string, command: CreateTripPlanCommand): Promise<TripPlanDetailDto> {
+    // Validate UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(id)) {
+      throw new Error('Invalid trip plan ID format');
+    }
+
+    // Get the authenticated user's ID
+    const { data: { user } } = await this.client.auth.getUser();
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+
+    try {
+      // Validate input
+      if (new Date(command.date_to) < new Date(command.date_from)) {
+        throw new Error('End date must be after start date');
+      }
+
+      if (command.location.length > 100) {
+        throw new Error('Location must not exceed 100 characters');
+      }
+
+      if (command.number_of_people <= 0 || command.number_of_people > 100) {
+        throw new Error('Number of people must be between 1 and 100');
+      }
+
+      if (command.trip_plan_description.length > 1000) {
+        throw new Error('Trip plan description must not exceed 1000 characters');
+      }
+
+      // Validate preferences exist in the preferences table
+      if (command.preferences_list) {
+        const preferences = command.preferences_list.split(';');
+        const { data: validPreferences, error: preferencesError } = await this.client
+          .from('preferences')
+          .select('name')
+          .in('name', preferences);
+
+        if (preferencesError) {
+          throw new Error('Failed to validate preferences');
+        }
+
+        const validPreferenceNames = validPreferences.map(p => p.name);
+        const invalidPreferences = preferences.filter(p => !validPreferenceNames.includes(p));
+        
+        if (invalidPreferences.length > 0) {
+          throw new Error(`Invalid preferences: ${invalidPreferences.join(', ')}`);
+        }
+      }
+
+      // Update the trip plan
+      const { data, error } = await this.client
+        .from('trip_plans')
+        .update({
+          ...command,
+          user_id: user.id
+        })
+        .eq('id', id)
+        .eq('user_id', user.id)
+        .select()
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') {
+          throw new Error('Trip plan not found');
+        }
+        throw error;
+      }
+
+      if (!data) {
+        throw new Error('Failed to update trip plan');
+      }
+
+      return data as TripPlanDetailDto;
+    } catch (error) {
+      console.error('Error updating trip plan:', error);
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('Failed to update trip plan');
+    }
+  }
+
   async getPreferences(): Promise<PreferenceDto[]> {
     try {
       const { data, error } = await this.client

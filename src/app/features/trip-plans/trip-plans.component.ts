@@ -59,6 +59,10 @@ export class TripPlansComponent implements OnInit {
     }
   }
 
+  handleEdit(plan: TripPlanSummaryDto): void {
+    this.router.navigate(['/trips', plan.id, 'edit']);
+  }
+
   private async loadPage(page = 1, limit = 20): Promise<void> {
     try {
       this.loading.set(true);

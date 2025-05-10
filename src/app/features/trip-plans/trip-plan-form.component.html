@@ -1,6 +1,20 @@
 <div class="flex justify-center min-h-screen bg-gray-100">
   <div class="container mx-auto px-4 py-8 max-w-2xl">
-    <h1 class="text-2xl font-bold mb-6">Create Trip Plan</h1>
+    <h1 class="text-2xl font-bold mb-6">{{ isEdit() ? 'Edit' : 'Create' }} Trip Plan</h1>
+    
+    @if (error()) {
+      <mat-card class="mb-6">
+        <mat-card-content class="text-red-600">
+          {{ error() }}
+        </mat-card-content>
+      </mat-card>
+    }
+    
+    @if (loading()) {
+      <div class="flex justify-center my-8">
+        <mat-spinner diameter="48" />
+      </div>
+    }
     
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -80,7 +94,7 @@
           Generate with AI
         </button>
         <button mat-raised-button color="accent" type="submit" [disabled]="form.invalid">
-          Save Trip Plan
+          {{ isEdit() ? 'Update' : 'Save' }} Trip Plan
         </button>
       </div>
     </form>
