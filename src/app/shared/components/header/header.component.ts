@@ -36,8 +36,15 @@ export class HeaderComponent {
       this.isAuthenticated.set(false);
     }
   }
-
   protected async handleLogout(): Promise<void> {
-    // Empty method for now
+    try {
+      this.isLoading.set(true);
+      await this.supabaseService.getSupabaseClient().auth.signOut();
+      await this.router.navigate(['/login']);
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 }
