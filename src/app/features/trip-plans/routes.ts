@@ -7,6 +7,7 @@ export const TRIP_PLANS_ROUTES: Route[] = [
     path: '',
     pathMatch: 'full',
     component: TripPlansComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'create',
