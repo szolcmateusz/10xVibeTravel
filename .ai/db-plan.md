@@ -26,7 +26,7 @@ This table is managed by Supabase Auth.
 - location VARCHAR(255) NOT NULL
 - preferences_list VARCHAR(500) NOT NULL
 - number_of_people INTEGER NOT NULL
-- trip_plan_description VARCHAR(1000) NOT NULL
+- trip_plan_description TEXT NOT NULL
 - ai_plan_accepted BOOLEAN NOT NULL
 - created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 - updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
