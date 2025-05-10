@@ -101,6 +101,14 @@ Acceptance Criteria:
 - The user has access to a list of their trips.
 - Trip plans are displayed in a paginated list.
 
+### US-009
+ID: US-009
+Title: View details of created trip plan 
+Description: The user can view details of the created trip plans.
+Acceptance Criteria:
+- The user has access to the details of the trip plan he or she has created.
+
+
 ## 6. Success Metrics
 1. 90% of AI-generated trip plans must be accepted by users, measured by the number of "accept" button clicks.
 2. 75% of users should generate at least 3 trip plans annually, monitored through the usage analytics system.
