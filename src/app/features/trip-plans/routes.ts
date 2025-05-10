@@ -19,5 +19,10 @@ export const TRIP_PLANS_ROUTES: Route[] = [
     path: ':id/edit',
     loadComponent: () => import('./trip-plan-form.component').then(m => m.TripPlanFormComponent),
     canActivate: [authGuard]
+  },
+  {
+    path: ':id',
+    loadComponent: () => import('./trip-plan-detail.component').then(m => m.TripPlanDetailComponent),
+    canActivate: [authGuard]
   }
 ];
