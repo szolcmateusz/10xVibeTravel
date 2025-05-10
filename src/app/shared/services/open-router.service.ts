@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { EnvironmentService } from './environment.service';
 import { z } from 'zod';
 import { ChatResponse, OpenRouterError, ValidationError, AuthenticationError, RateLimitError, ChatMessage, CreateTripPlanCommand } from '../../../api.types';
-import { TripPlanSchema } from '../../../api.types';
 
 interface ModelsResponse {
   models: { id: string }[];
@@ -54,16 +53,12 @@ export class OpenRouterService {
     }
   }
 
-  async generateTripPlan(command: CreateTripPlanCommand): Promise<ChatResponse<{ itinerary: string[]; summary: string }>> {
+  async generateTripPlan(date_from: string, date_to: string, location: string, number_of_people: number, preferences: string): Promise<string> {
     const messages: ChatMessage[] = [
       {
-        role: 'system',
-        content: 'You are a travel planning assistant. Generate a detailed itinerary and summary based on the user\'s preferences.'
-      },
-      {
         role: 'user',
-        content: `Please create a travel plan for ${command.location} from ${command.date_from} to ${command.date_to} for ${command.number_of_people} people. 
-                 Preferences: ${command.preferences_list}`
+        content: `Please create a travel plan for ${location} from ${new Date(date_from).toLocaleDateString()} to ${new Date(date_to).toLocaleDateString()} for ${number_of_people} people.
+        The plan should take into account the following tourist preferences: ${preferences}. Give the plan itself without unnecessary text.`         
       }
     ];
 
@@ -74,20 +69,20 @@ export class OpenRouterService {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'mistralai/mixtral-8x7b-instruct',
+        model: 'openai/gpt-4-turbo',
         messages
       })
     });
-
     if (!response.ok) {
       throw new Error('Failed to generate AI plan');
     }
 
     const data = await response.json();
     const content = data.choices[0].message.content;
+
     
     try {
-      return TripPlanSchema.parse(JSON.parse(content));
+      return content;
     } catch (error) {
       throw new Error('Invalid AI response format');
     }

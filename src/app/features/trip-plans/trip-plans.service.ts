@@ -163,7 +163,6 @@ export class TripPlansService {
 
       return data as TripPlanDetailDto;
     } catch (error) {
-      console.error('Error creating trip plan:', error);
       if (error instanceof Error) {
         throw error;
       }

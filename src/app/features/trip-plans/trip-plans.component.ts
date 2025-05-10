@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { TripPlansService } from './trip-plans.service';
 import { TripPlanSummaryDto, TripPlanSummaryListDto } from '../../../api.types';
 import { MaterialModule } from '../../shared/material/material';
@@ -17,6 +18,7 @@ import { ConfirmationDialogService } from '../../shared/services/confirmation-di
 export class TripPlansComponent implements OnInit {
   private readonly tripPlansService = inject(TripPlansService);
   private readonly confirmationDialog = inject(ConfirmationDialogService);
+  private readonly router = inject(Router);
   
   tripPlans = signal<TripPlanSummaryListDto | null>(null);
   loading = signal(false);
@@ -24,6 +26,11 @@ export class TripPlansComponent implements OnInit {
   
   async ngOnInit(): Promise<void> {
     await this.loadPage(1);
+  }
+
+  handleCreateTripPlan(): void {
+    console.log('Create Trip Plan');
+    this.router.navigate(['/trips/create']);
   }
 
   async handlePageEvent(event: PageEvent): Promise<void> {
