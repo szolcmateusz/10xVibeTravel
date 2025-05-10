@@ -12,7 +12,7 @@ import { signal, inject } from '@angular/core';
 import { TripPlansService } from './trip-plans.service';
 import { OpenRouterService } from '../../shared/services/open-router.service';
 import { ConfirmationDialogService } from '../../shared/services/confirmation-dialog.service';
-import { CreateTripPlanCommand, PreferenceDto, TripPlanDetailDto } from '../../../api.types';
+import { CreateTripPlanCommand, PreferenceDto } from '../../../api.types';
 import { PreferencesCheckboxListComponent } from '../../shared/components/preferences-checkbox-list/preferences-checkbox-list.component';
 import { SpinnerOverlayComponent } from '../../shared/components/spinner-overlay/spinner-overlay.component';
 
