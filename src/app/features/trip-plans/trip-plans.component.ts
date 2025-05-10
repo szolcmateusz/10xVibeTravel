@@ -5,13 +5,20 @@ import { TripPlansService } from './trip-plans.service';
 import { TripPlanSummaryDto, TripPlanSummaryListDto } from '../../../api.types';
 import { MaterialModule } from '../../shared/material/material';
 import { PageEvent } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ConfirmationDialogService } from '../../shared/services/confirmation-dialog.service';
 
 @Component({
   selector: 'trv-trip-plans',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    MatTableModule,
+    MatTooltipModule
+  ],
   templateUrl: './trip-plans.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -24,6 +31,8 @@ export class TripPlansComponent implements OnInit {
   loading = signal(false);
   error = signal<string | null>(null);
   
+  displayedColumns: string[] = ['location', 'date_from', 'date_to', 'actions'];
+
   async ngOnInit(): Promise<void> {
     await this.loadPage(1);
   }
