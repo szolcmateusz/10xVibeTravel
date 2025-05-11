@@ -4,13 +4,15 @@
     <span class="flex-1"></span>
     <button mat-button (click)="handleLogout()" [disabled]="isLoading()">
       @if (isLoading()) {
-        <mat-spinner diameter="20" class="mr-2" />
-        <span>Logging out...</span>
+        <span class="flex items-center space-x-1">
+          <mat-spinner diameter="20" />
+          <span>Logging out...</span>
+        </span>
       } @else {
-        <ng-container>
-          <mat-icon class="mr-1">logout</mat-icon>
+        <span class="flex items-center space-x-1">
+          <mat-icon>logout</mat-icon>
           <span>Logout</span>
-        </ng-container>
+        </span>
       }
     </button>
   </mat-toolbar>
