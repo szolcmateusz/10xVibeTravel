@@ -91,9 +91,8 @@
         }
       </mat-form-field>
 
-      <div class="flex justify-between space-x-4">
-        <button mat-raised-button color="primary" type="button" 
-                [disabled]="loadingAi()"
+      <div class="flex justify-between space-x-4">        <button mat-raised-button color="primary" type="button" 
+                [disabled]="loadingAi() || !isReadyForAiGeneration"
                 (click)="onGenerateAi()">
           Generate with AI
         </button>

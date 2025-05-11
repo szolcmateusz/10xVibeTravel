@@ -57,6 +57,17 @@ export class TripPlanFormComponent {
   readonly loading = signal(true);
   readonly error = signal<string | null>(null);
 
+  get isReadyForAiGeneration(): boolean {
+    const formControls = this.form.controls;
+    return !!(
+      formControls.dateFrom.valid &&
+      formControls.dateTo.valid &&
+      formControls.location.valid &&
+      formControls.numberOfPeople.valid &&
+      formControls.selectedPreferences.valid
+    );
+  }
+
   constructor() {
     this.init();
   }
@@ -131,7 +142,7 @@ export class TripPlanFormComponent {
   }
 
   async onGenerateAi(): Promise<void> {
-    if (this.form.invalid) {
+    if (!this.isReadyForAiGeneration) {
       return;
     }
 
