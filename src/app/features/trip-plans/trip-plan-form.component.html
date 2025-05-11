@@ -22,9 +22,11 @@
           <mat-label>From Date</mat-label>
           <input matInput [matDatepicker]="fromPicker" formControlName="dateFrom">
           <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
-          <mat-datepicker #fromPicker></mat-datepicker>
-          @if (form.get('dateFrom')?.errors?.['required'] && form.get('dateFrom')?.touched) {
+          <mat-datepicker #fromPicker></mat-datepicker>          @if (form.get('dateFrom')?.errors?.['required'] && form.get('dateFrom')?.touched) {
             <mat-error>From date is required</mat-error>
+          }
+          @if (form.get('dateFrom')?.errors?.['dateInPast']) {
+            <mat-error>From date cannot be in the past</mat-error>
           }
         </mat-form-field>
 
@@ -32,12 +34,14 @@
           <mat-label>To Date</mat-label>
           <input matInput [matDatepicker]="toPicker" formControlName="dateTo">
           <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
-          <mat-datepicker #toPicker></mat-datepicker>
-          @if (form.get('dateTo')?.errors?.['required'] && form.get('dateTo')?.touched) {
+          <mat-datepicker #toPicker></mat-datepicker>          @if (form.get('dateTo')?.errors?.['required'] && form.get('dateTo')?.touched) {
             <mat-error>To date is required</mat-error>
           }
           @if (form.get('dateTo')?.errors?.['dateToBeforeFrom']) {
             <mat-error>To date must be after from date</mat-error>
+          }
+          @if (form.get('dateTo')?.errors?.['dateInPast']) {
+            <mat-error>To date cannot be in the past</mat-error>
           }
         </mat-form-field>
       </div>

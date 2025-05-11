@@ -43,8 +43,8 @@ export class TripPlanFormComponent {
   private readonly route = inject(ActivatedRoute);
 
   readonly form = this.formBuilder.group({
-    dateFrom: ['', Validators.required],
-    dateTo: ['', [Validators.required, this.dateToValidator.bind(this)]],
+    dateFrom: ['', [Validators.required, this.dateNotInPastValidator]],
+    dateTo: ['', [Validators.required, this.dateToValidator.bind(this), this.dateNotInPastValidator]],
     location: ['', [Validators.required, Validators.maxLength(100)]],
     numberOfPeople: [1, [Validators.required, Validators.min(1), Validators.max(100)]],
     selectedPreferences: [[] as string[], [Validators.required, this.preferencesValidator]],
@@ -95,6 +95,21 @@ export class TripPlanFormComponent {
     }
   }
 
+  private dateNotInPastValidator(control: AbstractControl): ValidationErrors | null {
+    const date = control.value;
+    if (!date) {
+      return null;
+    }
+
+    const selectedDate = new Date(date);
+    selectedDate.setHours(0, 0, 0, 0);
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return selectedDate >= today ? null : { dateInPast: true };
+  }
+
   private dateToValidator(control: AbstractControl): ValidationErrors | null {
     const dateTo = control.value;
     const dateFrom = this.form?.get('dateFrom')?.value;
@@ -141,8 +156,7 @@ export class TripPlanFormComponent {
         this.form.patchValue({
           tripPlanDescription: aiResponse
         });
-      }
-    } catch (_error) {
+      }    } catch (_error) {
       this.dialogService.showError('Failed to generate AI plan');
     } finally {
       this.loadingAi.set(false);
@@ -172,8 +186,7 @@ export class TripPlanFormComponent {
         await this.tripPlansService.createTripPlan(command);
       }
       
-      this.router.navigate(['/trips']);
-    } catch (_error) {
+      this.router.navigate(['/trips']);    } catch (_error) {
       this.dialogService.showError(`Failed to ${this.isEdit() ? 'update' : 'create'} trip plan`);
     }
   }
