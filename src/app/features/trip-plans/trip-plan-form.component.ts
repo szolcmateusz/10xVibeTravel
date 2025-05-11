@@ -42,6 +42,8 @@ export class TripPlanFormComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
+  private isAIGenerated = false;
+
   readonly form = this.formBuilder.group({
     dateFrom: ['', [Validators.required, this.dateNotInPastValidator]],
     dateTo: ['', [Validators.required, this.dateToValidator.bind(this), this.dateNotInPastValidator]],
@@ -159,7 +161,7 @@ export class TripPlanFormComponent {
 
       const shouldAccept = await this.dialogService.confirm({
         title: 'AI Generated Plan',
-        message: formValue.location as string,
+        message: `${formValue.location as string} from ${new Date(formValue.dateFrom as string).toLocaleDateString()} to ${new Date(formValue.dateTo as string).toLocaleDateString()}.`,
         details: aiResponse
       });
 
@@ -188,7 +190,8 @@ export class TripPlanFormComponent {
         location: formValue.location as string,
         number_of_people: formValue.numberOfPeople as number,
         preferences_list: selectedPreferences as string,
-        trip_plan_description: formValue.tripPlanDescription as string
+        trip_plan_description: formValue.tripPlanDescription as string,
+        ai_plan_accepted: this.isAIGenerated
       };
 
       if (this.isEdit()) {
