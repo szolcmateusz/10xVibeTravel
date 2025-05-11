@@ -28,8 +28,8 @@ export class HeaderComponent {
       this.isAuthenticated.set(!!user);
 
       // Subscribe to auth state changes
-      this.supabaseService.getSupabaseClient().auth.onAuthStateChange((event) => {
-        this.isAuthenticated.set(event === 'SIGNED_IN');
+      this.supabaseService.getSupabaseClient().auth.onAuthStateChange((_, session) => {
+        this.isAuthenticated.set(!!session);
       });
     } catch (error) {
       console.error('Auth state initialization error:', error);
