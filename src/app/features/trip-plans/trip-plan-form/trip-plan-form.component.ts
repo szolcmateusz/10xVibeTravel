@@ -1,20 +1,14 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatCardModule } from '@angular/material/card';
 import { Router, ActivatedRoute } from '@angular/router';
 import { signal, inject } from '@angular/core';
-import { TripPlansService } from './trip-plans.service';
-import { OpenRouterService } from '../../shared/services/open-router.service';
-import { ConfirmationDialogService } from '../../shared/services/confirmation-dialog.service';
-import { CreateTripPlanCommand, PreferenceDto } from '../../../api.types';
-import { PreferencesCheckboxListComponent } from '../../shared/components/preferences-checkbox-list/preferences-checkbox-list.component';
-import { SpinnerOverlayComponent } from '../../shared/components/spinner-overlay/spinner-overlay.component';
+import { TripPlansService } from '../services/trip-plans.service';
+import { OpenRouterService } from '../../../shared/services/open-router.service';
+import { ConfirmationDialogService } from '../../../shared/services/confirmation-dialog.service';
+import { CreateTripPlanCommand, PreferenceDto } from '../../../../api.types';
+import { PreferencesCheckboxListComponent } from '../preferences-checkbox-list/preferences-checkbox-list.component';
+import { SpinnerOverlayComponent } from '../../../shared/components/spinner-overlay/spinner-overlay.component';
+import { MaterialModule } from '../../../shared/material/material';
 
 @Component({
   selector: 'trv-trip-plan-form',
@@ -22,13 +16,7 @@ import { SpinnerOverlayComponent } from '../../shared/components/spinner-overlay
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatDatepickerModule,
-    MatCheckboxModule,
-    MatProgressSpinnerModule,
-    MatCardModule,
+    MaterialModule,
     PreferencesCheckboxListComponent,
     SpinnerOverlayComponent
   ],

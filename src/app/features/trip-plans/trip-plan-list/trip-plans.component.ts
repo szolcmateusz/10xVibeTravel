@@ -1,14 +1,14 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { TripPlansService } from './trip-plans.service';
-import { TripPlanSummaryDto, TripPlanSummaryListDto } from '../../../api.types';
-import { MaterialModule } from '../../shared/material/material';
+import { TripPlansService } from '../services/trip-plans.service';
+import { TripPlanSummaryDto, TripPlanSummaryListDto } from '../../../../api.types';
+import { MaterialModule } from '../../../shared/material/material';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { ConfirmationDialogService } from '../../shared/services/confirmation-dialog.service';
+import { ConfirmationDialogService } from '../../../shared/services/confirmation-dialog.service';
 
 @Component({
   selector: 'trv-trip-plans',

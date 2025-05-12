@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { TripPlanSummaryDto, TripPlanSummaryListDto, TripPlanDetailDto, CreateTripPlanCommand, PreferenceDto } from '../../../api.types';
-import { SupabaseService } from '../../shared/db/supabase.service';
+import { TripPlanSummaryDto, TripPlanSummaryListDto, TripPlanDetailDto, CreateTripPlanCommand, PreferenceDto } from '../../../../api.types';
+import { SupabaseService } from '../../../shared/db/supabase.service';
 
 @Injectable({
   providedIn: 'root'

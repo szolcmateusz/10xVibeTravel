@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { SpinnerOverlayComponent } from '../../shared/components/spinner-overlay/spinner-overlay.component';
-import { ErrorViewComponent } from '../../shared/components/error-view/error-view.component';
-import { ConfirmationDialogService } from '../../shared/services/confirmation-dialog.service';
-import { TripPlanDetailDto } from '../../../api.types';
-import { TripPlansService } from './trip-plans.service';
+import { SpinnerOverlayComponent } from '../../../shared/components/spinner-overlay/spinner-overlay.component';
+import { ErrorViewComponent } from '../../../shared/components/error-view/error-view.component';
+import { ConfirmationDialogService } from '../../../shared/services/confirmation-dialog.service';
+import { TripPlanDetailDto } from '../../../../api.types';
+import { MaterialModule } from '../../../shared/material/material';
+import { TripPlansService } from '../services/trip-plans.service';
 
 interface TripPlanDetailViewModel {
   id: string;
@@ -27,8 +26,7 @@ interface TripPlanDetailViewModel {
   standalone: true,
   imports: [
     CommonModule, 
-    MatCardModule, 
-    MatButtonModule,
+    MaterialModule,
     SpinnerOverlayComponent,
     ErrorViewComponent
   ],

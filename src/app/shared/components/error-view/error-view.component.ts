@@ -7,24 +7,8 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'trv-error-view',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, RouterModule],
-  template: `
-    <div class="flex justify-center items-center min-h-[50vh]">
-      <mat-card class="max-w-md w-full p-6">
-        <mat-card-header class="justify-center mb-4">
-          <mat-card-title>{{ title }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="text-center">
-          <p>{{ message }}</p>
-        </mat-card-content>
-        <mat-card-actions class="justify-center">
-          <a mat-raised-button color="primary" routerLink="/trips">
-            Back to Trip Plans
-          </a>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-  `,
+  imports: [CommonModule, MatCardModule, MatButtonModule, RouterModule],  
+  templateUrl: './error-view.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ErrorViewComponent {

@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PreferenceDto } from '../../../../api.types';
+import { MaterialModule } from '../../../shared/material/material';
 
 @Component({
   selector: 'trv-preferences-checkbox-list',
   templateUrl: './preferences-checkbox-list.component.html',
   standalone: true,
-  imports: [MatCheckboxModule],
+  imports: [MaterialModule],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PreferencesCheckboxListComponent {
