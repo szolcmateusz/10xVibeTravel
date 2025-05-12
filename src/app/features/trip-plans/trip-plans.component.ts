@@ -38,7 +38,6 @@ export class TripPlansComponent implements OnInit {
   }
 
   handleCreateTripPlan(): void {
-    console.log('Create Trip Plan');
     this.router.navigate(['/trips/create']);
   }
 
@@ -83,7 +82,6 @@ export class TripPlansComponent implements OnInit {
       const data = await this.tripPlansService.getTripPlanSummaryList(page, limit);
       this.tripPlans.set(data);
     } catch (err) {
-      console.log(err instanceof Error ? err.message : 'An error occurred while loading trip plans');
       this.error.set(err instanceof Error ? err.message : 'An error occurred while loading trip plans');
     } finally {
       this.loading.set(false);

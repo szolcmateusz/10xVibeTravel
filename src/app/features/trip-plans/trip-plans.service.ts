@@ -117,10 +117,6 @@ export class TripPlansService {
       throw new Error('Number of people must be between 1 and 100');
     }
 
-    if (command.trip_plan_description.length > 1000) {
-      throw new Error('Trip plan description must not exceed 1000 characters');
-    }
-
     // Get the authenticated user's ID
     const { data: { user } } = await this.client.auth.getUser();
     if (!user) {
@@ -148,7 +144,6 @@ export class TripPlansService {
         }
       }
 
-      // Insert the trip plan
       const { data, error } = await this.client
         .from('trip_plans')
         .insert({
