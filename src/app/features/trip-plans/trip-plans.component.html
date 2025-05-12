@@ -15,12 +15,13 @@
     </div>
   }
 
-  @if (!loading() && tripPlans()) {
-    <div class="flex justify-start mb-4">
+   <div class="flex justify-start mb-4">
       <button mat-raised-button color="primary" (click)="handleCreateTripPlan()">
         Create New Trip Plan
       </button>
     </div>
+    
+  @if (!loading() && tripPlans()) {
     <div class="mat-elevation-z2">
       <table mat-table [dataSource]="tripPlans()!.data" class="w-full">
         <!-- Location Column -->
@@ -70,17 +71,5 @@
         aria-label="Select page of trip plans"
       />
     </div>
-  }
-  
-  @if (!loading() && (!tripPlans() || tripPlans()!.data.length === 0)) {
-    <mat-card>
-      <mat-card-content class="flex flex-col items-center py-8">
-        <mat-icon class="text-4xl mb-4">flight_takeoff</mat-icon>
-        <p class="text-lg">No trip plans yet</p>
-        <button mat-raised-button color="primary" class="mt-4" (click)="handleCreateTripPlan()">
-          Create Your First Trip Plan
-        </button>
-      </mat-card-content>
-    </mat-card>
   }
 </div>
