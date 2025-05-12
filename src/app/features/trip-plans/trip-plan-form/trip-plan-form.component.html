@@ -82,7 +82,7 @@
 
       <mat-form-field appearance="fill" class="w-full">
         <mat-label>Trip Plan Description</mat-label>
-        <textarea matInput formControlName="tripPlanDescription" rows="6" placeholder="Enter trip plan details"></textarea>
+        <textarea [readonly]="isAIGenerated" matInput formControlName="tripPlanDescription" rows="6" placeholder="Enter trip plan details"></textarea>
         @if (form.get('tripPlanDescription')?.errors?.['required'] && form.get('tripPlanDescription')?.touched) {
           <mat-error>Description is required</mat-error>
         }

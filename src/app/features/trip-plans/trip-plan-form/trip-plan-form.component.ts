@@ -30,7 +30,7 @@ export class TripPlanFormComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
-  private isAIGenerated = false;
+  public isAIGenerated = false;
 
   readonly form = this.formBuilder.group({
     dateFrom: ['', [Validators.required, this.dateNotInPastValidator]],
@@ -91,7 +91,7 @@ export class TripPlanFormComponent {
     try {
       const prefs = await this.tripPlansService.getPreferences();
       this.preferences.set(prefs);
-    } catch (_error) {
+    } catch {
       this.dialogService.showError('Failed to load preferences');
     }
   }
@@ -157,7 +157,9 @@ export class TripPlanFormComponent {
         this.form.patchValue({
           tripPlanDescription: aiResponse
         });
-      }    } catch (_error) {
+        this.isAIGenerated = true;
+      }
+    } catch {
       this.dialogService.showError('Failed to generate AI plan');
     } finally {
       this.loadingAi.set(false);
@@ -188,7 +190,8 @@ export class TripPlanFormComponent {
         await this.tripPlansService.createTripPlan(command);
       }
       
-      this.router.navigate(['/trips']);    } catch (_error) {
+      this.router.navigate(['/trips']);
+    } catch {
       this.dialogService.showError(`Failed to ${this.isEdit() ? 'update' : 'create'} trip plan`);
     }
   }

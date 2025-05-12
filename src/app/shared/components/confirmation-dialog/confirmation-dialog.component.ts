@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MaterialModule } from '../../material/material';
 
 interface ConfirmDialogData {
   title: string;
@@ -13,7 +13,7 @@ interface ConfirmDialogData {
 @Component({
   selector: 'trv-confirmation-dialog',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, MatButtonModule],
+  imports: [CommonModule, MaterialModule],
   templateUrl: './confirmation-dialog.component.html'
 })
 export class ConfirmationDialogComponent {
