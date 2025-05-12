@@ -6,28 +6,32 @@ import { MaterialModule } from '../../../shared/material/material';
 import { SupabaseService } from '../../../shared/db/supabase.service';
 
 @Component({
-  selector: 'trv-login',
+  selector: 'trv-register',
   standalone: true,  imports: [
     CommonModule,
     ReactiveFormsModule,
     MaterialModule,
     RouterModule
   ],
-  templateUrl: './login.component.html',
+  templateUrl: './register.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginComponent {
+export class RegisterComponent {
   private readonly supabaseService = inject(SupabaseService);
   private readonly router = inject(Router);
 
-  protected readonly loginForm = new FormGroup({
+  protected readonly registerForm = new FormGroup({
     email: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.email]
     }),
     password: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(6)]
+      validators: [Validators.required, Validators.minLength(8)]
+    }),
+    confirmPassword: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required]
     })
   });
 
@@ -35,21 +39,30 @@ export class LoginComponent {
   protected readonly errorMessage = signal<string | null>(null);
 
   protected get emailControl() {
-    return this.loginForm.controls.email;
+    return this.registerForm.controls.email;
   }
 
   protected get passwordControl() {
-    return this.loginForm.controls.password;
+    return this.registerForm.controls.password;
+  }
+
+  protected get confirmPasswordControl() {
+    return this.registerForm.controls.confirmPassword;
   }
 
   protected async onSubmit(): Promise<void> {
-    if (this.loginForm.invalid) return;
+    if (this.registerForm.invalid) return;
+    
+    if (this.passwordControl.value !== this.confirmPasswordControl.value) {
+      this.errorMessage.set('Passwords do not match');
+      return;
+    }
 
     this.isLoading.set(true);
     this.errorMessage.set(null);
 
     try {
-      const { error } = await this.supabaseService.getSupabaseClient().auth.signInWithPassword({
+      const { error } = await this.supabaseService.getSupabaseClient().auth.signUp({
         email: this.emailControl.value,
         password: this.passwordControl.value
       });
@@ -58,8 +71,8 @@ export class LoginComponent {
 
       await this.router.navigate(['/']);
     } catch (error) {
-      console.error('Login error:', error);
-      this.errorMessage.set('Invalid email or password');
+      console.error('Registration error:', error);
+      this.errorMessage.set('Registration failed. Please try again.');
     } finally {
       this.isLoading.set(false);
     }
