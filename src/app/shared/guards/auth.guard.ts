@@ -6,15 +6,14 @@ export const authGuard: CanActivateFn = async () => {
   const supabase = inject(SupabaseService);
   const router = inject(Router);
 
-  try {
-    const { data: { user } } = await supabase.getSupabaseClient().auth.getUser();
+  try {    const { data: { user } } = await supabase.getSupabaseClient().auth.getUser();
     if (user) return true;
     
-    await router.navigate(['/login']);
+    await router.navigate(['/auth/login']);
     return false;
   } catch (error) {
     console.error('Auth guard error:', error);
-    await router.navigate(['/login']);
+    await router.navigate(['/auth/login']);
     return false;
   }
 };

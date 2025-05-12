@@ -40,7 +40,7 @@ export class HeaderComponent {
     try {
       this.isLoading.set(true);
       await this.supabaseService.getSupabaseClient().auth.signOut();
-      await this.router.navigate(['/login']);
+      await this.router.navigate(['/auth/login']);
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
