@@ -60,6 +60,6 @@ Tworzy nowy rekord podróży (trip_plan) powiązany z zalogowanym użytkownikiem
   - `date_to` >= `date_from`
   - `location`: maksymalna długość 100 znaków
   - `number_of_people`: > 0 oraz <= 100
-  - `trip_plan_description`: maksymalna długość 1000 znaków
+  - `trip_plan_description`: wartość nie może być pusta
   - `preferences_list` - zwiera tylko preferencje pobrane z tabeli `preferences`
 4. Dodać mechanizmy obsługi błędów.
