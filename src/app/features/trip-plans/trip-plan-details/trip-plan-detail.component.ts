@@ -56,7 +56,8 @@ export class TripPlanDetailComponent {
     try {
       this.isLoading.set(true);
       const dto = await this.tripPlansService.getTripPlanById(id);
-      this.tripDetail.set(this.mapDtoToViewModel(dto));    } catch (error: unknown) {
+      this.tripDetail.set(this.mapDtoToViewModel(dto));    
+    } catch (error: unknown) {
       const apiError = error as { status?: number; message?: string };
       if (apiError.status === 404) {
         this.error.set('not-found');
@@ -64,7 +65,6 @@ export class TripPlanDetailComponent {
         this.error.set('forbidden');
       } else {
         this.error.set('An unexpected error occurred. Please try again later.');
-        console.error('Error loading trip plan:', error);
       }
     } finally {
       this.isLoading.set(false);
@@ -100,7 +100,6 @@ export class TripPlanDetailComponent {
         await this.tripPlansService.deleteTripPlan(id);
         await this.router.navigate(['/trips']);
       } catch (error: unknown) {
-        console.error('Error deleting trip plan:', error);
         this.error.set('Failed to delete the trip plan. Please try again later.');
       }
     }

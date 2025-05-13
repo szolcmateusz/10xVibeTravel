@@ -11,9 +11,8 @@ export const unAuthGuard: CanActivateFn = async () => {
     if (!user) return true;
     
     await router.navigate(['/']);
-    return false;
-  } catch (error) {
-    console.error('UnAuth guard error:', error);
+    return false;  
+  } catch {
     return true;
   }
 };

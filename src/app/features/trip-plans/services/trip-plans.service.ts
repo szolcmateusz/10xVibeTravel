@@ -56,9 +56,8 @@ export class TripPlansService {
           limit,
           total: count ?? 0
         }
-      };
+      };    
     } catch (error) {
-      console.error('Error fetching trip plans:', error);
       throw new Error('Failed to fetch trip plans');
     }
   }
@@ -95,9 +94,8 @@ export class TripPlansService {
         throw new Error('Trip plan not found');
       }
 
-      return data as TripPlanDetailDto;
+      return data as TripPlanDetailDto;    
     } catch (error) {
-      console.error('Error fetching trip plan:', error);
       if (error instanceof Error) {
         throw error;
       }
@@ -221,9 +219,8 @@ export class TripPlansService {
         throw new Error('Failed to update trip plan');
       }
 
-      return data as TripPlanDetailDto;
+      return data as TripPlanDetailDto;    
     } catch (error) {
-      console.error('Error updating trip plan:', error);
       if (error instanceof Error) {
         throw error;
       }
@@ -248,11 +245,10 @@ export class TripPlansService {
 
       // Cache the preferences
       this.preferences.set(data as PreferenceDto[]);
-      return data as PreferenceDto[];
+      return data as PreferenceDto[];    
     } catch (error) {
-      console.error('Error fetching preferences:', error);
       throw new Error('Failed to fetch preferences');
-    }  }
+    }}
 
   async deleteTripPlan(id: string): Promise<void> {
     // Validate UUID format
@@ -280,9 +276,8 @@ export class TripPlansService {
           throw new Error('Trip plan not found');
         }
         throw error;
-      }
+      }    
     } catch (error) {
-      console.error('Error deleting trip plan:', error);
       if (error instanceof Error) {
         throw error;
       }

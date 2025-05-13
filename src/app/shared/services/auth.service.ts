@@ -24,9 +24,8 @@ export class AuthService {
       // Subscribe to auth state changes
       this.supabaseService.getSupabaseClient().auth.onAuthStateChange((_, session) => {
         this.isAuthenticated.set(!!session);
-      });
-    } catch (error) {
-      console.error('Auth state initialization error:', error);
+      });    
+    } catch {
       this.isAuthenticated.set(false);
     }
   }
@@ -43,11 +42,10 @@ export class AuthService {
         await this.router.navigate(['/']);
       }
 
-      return { error };
+      return { error };    
     } catch (error) {
-      console.error('Login error:', error);
       return { error: error as Error };
-    } finally {
+    }finally {
       this.isLoading.set(false);
     }
   }
@@ -64,9 +62,8 @@ export class AuthService {
         await this.router.navigate(['/']);
       }
 
-      return { error };
+      return { error };    
     } catch (error) {
-      console.error('Registration error:', error);
       return { error: error as Error };
     } finally {
       this.isLoading.set(false);
@@ -77,19 +74,15 @@ export class AuthService {
     try {
       this.isLoading.set(true);
       await this.supabaseService.getSupabaseClient().auth.signOut();
-      await this.router.navigate(['/auth/login']);
-    } catch (error) {
-      console.error('Logout error:', error);
+      await this.router.navigate(['/auth/login']);    
     } finally {
       this.isLoading.set(false);
     }
   }
 
-  async getCurrentUser() {
-    try {
+  async getCurrentUser() {    try {
       return await this.supabaseService.getSupabaseClient().auth.getUser();
     } catch (error) {
-      console.error('Get user error:', error);
       return { data: { user: null }, error };
     }
   }
