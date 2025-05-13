@@ -70,6 +70,7 @@ export class TripPlanDetailComponent {
       this.isLoading.set(false);
     }
   }
+  
   private mapDtoToViewModel(dto: TripPlanDetailDto): TripPlanDetailViewModel {
     return {
       id: dto.id,
