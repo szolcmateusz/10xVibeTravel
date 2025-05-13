@@ -192,10 +192,6 @@ export class TripPlansService {
         throw new Error('Number of people must be between 1 and 100');
       }
 
-      if (command.trip_plan_description.length > 1000) {
-        throw new Error('Trip plan description must not exceed 1000 characters');
-      }
-
       // Validate preferences exist in the preferences table
       if (command.preferences_list) {
         const preferences = command.preferences_list.split(';');

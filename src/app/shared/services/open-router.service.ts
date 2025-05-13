@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { EnvironmentService } from './environment.service';
 import { z } from 'zod';
-import { ChatResponse, OpenRouterError, ValidationError, AuthenticationError, RateLimitError, ChatMessage, CreateTripPlanCommand } from '../../../api.types';
+import { AuthenticationError, ChatMessage, ChatResponse, OpenRouterError, RateLimitError, ValidationError } from '../models/open-router-models';
 
 interface ModelsResponse {
   models: { id: string }[];
