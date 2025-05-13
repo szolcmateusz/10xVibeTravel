@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { TripPlanSummaryDto, TripPlanSummaryListDto, TripPlanDetailDto, CreateTripPlanCommand, PreferenceDto } from '../../../../api.types';
 import { SupabaseService } from '../../../shared/db/supabase.service';
@@ -8,6 +8,8 @@ import { SupabaseService } from '../../../shared/db/supabase.service';
 })
 export class TripPlansService {
   private readonly supabaseService = inject(SupabaseService);
+  private readonly preferences = signal<PreferenceDto[]>([]);
+  
   private get client(): SupabaseClient {
     return this.supabaseService.getSupabaseClient();
   }
@@ -127,15 +129,7 @@ export class TripPlansService {
       // Validate preferences exist in the preferences table
       if (command.preferences_list) {
         const preferences = command.preferences_list.split(';');
-        const { data: validPreferences, error: preferencesError } = await this.client
-          .from('preferences')
-          .select('name')
-          .in('name', preferences);
-
-        if (preferencesError) {
-          throw new Error('Failed to validate preferences');
-        }
-
+        const validPreferences = await this.getPreferences();
         const validPreferenceNames = validPreferences.map(p => p.name);
         const invalidPreferences = preferences.filter(p => !validPreferenceNames.includes(p));
         
@@ -195,15 +189,7 @@ export class TripPlansService {
       // Validate preferences exist in the preferences table
       if (command.preferences_list) {
         const preferences = command.preferences_list.split(';');
-        const { data: validPreferences, error: preferencesError } = await this.client
-          .from('preferences')
-          .select('name')
-          .in('name', preferences);
-
-        if (preferencesError) {
-          throw new Error('Failed to validate preferences');
-        }
-
+        const validPreferences = await this.getPreferences();
         const validPreferenceNames = validPreferences.map(p => p.name);
         const invalidPreferences = preferences.filter(p => !validPreferenceNames.includes(p));
         
@@ -246,6 +232,11 @@ export class TripPlansService {
   }
 
   async getPreferences(): Promise<PreferenceDto[]> {
+    // Return cached preferences if available
+    if (this.preferences().length > 0) {
+      return this.preferences();
+    }
+
     try {
       const { data, error } = await this.client
         .from('preferences')
@@ -255,12 +246,13 @@ export class TripPlansService {
       if (error) throw error;
       if (!data) throw new Error('No data returned');
 
+      // Cache the preferences
+      this.preferences.set(data as PreferenceDto[]);
       return data as PreferenceDto[];
     } catch (error) {
       console.error('Error fetching preferences:', error);
       throw new Error('Failed to fetch preferences');
-    }
-  }
+    }  }
 
   async deleteTripPlan(id: string): Promise<void> {
     // Validate UUID format
