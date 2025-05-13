@@ -1,23 +1,27 @@
 import { Route } from '@angular/router';
+import { unAuthGuard } from '../../shared/guards/un-auth.guard';
 import { AuthLayoutComponent } from '../../shared/components/auth-layout/auth-layout.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 export const AUTH_ROUTES: Route[] = [
   {
     path: '',
     component: AuthLayoutComponent,
+    canActivate: [unAuthGuard],
     children: [
       {
         path: 'login',
-        loadComponent: () => import('./login/login.component').then(m => m.LoginComponent)
+        component: LoginComponent
       },
       {
         path: 'register',
-        loadComponent: () => import('./register/register.component').then(m => m.RegisterComponent)
+        component: RegisterComponent
       },
       {
         path: '',
-        pathMatch: 'full',
-        redirectTo: 'login'
+        redirectTo: 'login',
+        pathMatch: 'full'
       }
     ]
   }
