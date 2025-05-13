@@ -1,9 +1,9 @@
-@if (isAuthenticated()) {
+@if (authService.isAuthenticated()) {
   <mat-toolbar class="bg-primary text-white">
     <span class="text-lg font-medium">VibeTravels</span>
     <span class="flex-1"></span>
-    <button mat-button (click)="handleLogout()" [disabled]="isLoading()">
-      @if (isLoading()) {
+    <button mat-button (click)="handleLogout()" [disabled]="authService.isLoading()">
+      @if (authService.isLoading()) {
         <span class="flex items-center space-x-1">
           <mat-spinner diameter="20" />
           <span>Logging out...</span>

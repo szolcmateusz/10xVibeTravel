@@ -91,7 +91,7 @@ export class TripPlanFormComponent {
     try {
       const prefs = await this.tripPlansService.getPreferences();
       this.preferences.set(prefs);
-    } catch {
+    } catch (_error) {
       this.dialogService.showError('Failed to load preferences');
     }
   }
@@ -157,9 +157,7 @@ export class TripPlanFormComponent {
         this.form.patchValue({
           tripPlanDescription: aiResponse
         });
-        this.isAIGenerated = true;
-      }
-    } catch {
+      }    } catch (_error) {
       this.dialogService.showError('Failed to generate AI plan');
     } finally {
       this.loadingAi.set(false);
@@ -190,8 +188,7 @@ export class TripPlanFormComponent {
         await this.tripPlansService.createTripPlan(command);
       }
       
-      this.router.navigate(['/trips']);
-    } catch {
+      this.router.navigate(['/trips']);    } catch (_error) {
       this.dialogService.showError(`Failed to ${this.isEdit() ? 'update' : 'create'} trip plan`);
     }
   }

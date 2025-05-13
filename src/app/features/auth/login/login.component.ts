@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../../../shared/material/material';
-import { SupabaseService } from '../../../shared/db/supabase.service';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'trv-login',
-  standalone: true,  imports: [
+  standalone: true,
+  imports: [
     CommonModule,
     ReactiveFormsModule,
     MaterialModule,
@@ -17,8 +18,7 @@ import { SupabaseService } from '../../../shared/db/supabase.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
-  private readonly supabaseService = inject(SupabaseService);
-  private readonly router = inject(Router);
+  protected readonly authService = inject(AuthService);
 
   protected readonly loginForm = new FormGroup({
     email: new FormControl('', {
@@ -31,7 +31,6 @@ export class LoginComponent {
     })
   });
 
-  protected readonly isLoading = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
 
   protected get emailControl() {
@@ -45,23 +44,15 @@ export class LoginComponent {
   protected async onSubmit(): Promise<void> {
     if (this.loginForm.invalid) return;
 
-    this.isLoading.set(true);
     this.errorMessage.set(null);
 
-    try {
-      const { error } = await this.supabaseService.getSupabaseClient().auth.signInWithPassword({
-        email: this.emailControl.value,
-        password: this.passwordControl.value
-      });
+    const { error } = await this.authService.login(
+      this.emailControl.value,
+      this.passwordControl.value
+    );
 
-      if (error) throw error;
-
-      await this.router.navigate(['/']);
-    } catch (error) {
-      console.error('Login error:', error);
+    if (error) {
       this.errorMessage.set('Invalid email or password');
-    } finally {
-      this.isLoading.set(false);
     }
   }
 }

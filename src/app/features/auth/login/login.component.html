@@ -40,9 +40,9 @@
         }
 
         <button mat-raised-button color="primary" type="submit" 
-                [disabled]="loginForm.invalid || isLoading()"
+                [disabled]="loginForm.invalid || authService.isLoading()"
                 class="flex gap-2 justify-center items-center">
-          @if (isLoading()) {
+          @if (authService.isLoading()) {
             <mat-spinner diameter="20" />
             <span>Logging in...</span>
           } @else {

@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../../../shared/material/material';
-import { SupabaseService } from '../../../shared/db/supabase.service';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'trv-register',
-  standalone: true,  imports: [
+  standalone: true,
+  imports: [
     CommonModule,
     ReactiveFormsModule,
     MaterialModule,
@@ -17,8 +18,7 @@ import { SupabaseService } from '../../../shared/db/supabase.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterComponent {
-  private readonly supabaseService = inject(SupabaseService);
-  private readonly router = inject(Router);
+  protected readonly authService = inject(AuthService);
 
   protected readonly registerForm = new FormGroup({
     email: new FormControl('', {
@@ -35,7 +35,6 @@ export class RegisterComponent {
     })
   });
 
-  protected readonly isLoading = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
 
   protected get emailControl() {
@@ -58,23 +57,15 @@ export class RegisterComponent {
       return;
     }
 
-    this.isLoading.set(true);
     this.errorMessage.set(null);
 
-    try {
-      const { error } = await this.supabaseService.getSupabaseClient().auth.signUp({
-        email: this.emailControl.value,
-        password: this.passwordControl.value
-      });
+    const { error } = await this.authService.register(
+      this.emailControl.value,
+      this.passwordControl.value
+    );
 
-      if (error) throw error;
-
-      await this.router.navigate(['/']);
-    } catch (error) {
-      console.error('Registration error:', error);
+    if (error) {
       this.errorMessage.set('Registration failed. Please try again.');
-    } finally {
-      this.isLoading.set(false);
     }
   }
 }
