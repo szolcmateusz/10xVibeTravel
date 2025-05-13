@@ -54,7 +54,7 @@ TripPlanFormRoute
   - `location` (wymagane, max 100)
   - `numberOfPeople` (>=1,<=100)
   - co najmniej jedna preferencja
-  - `tripPlanDescription` (wymagane, max 1000)
+  - `tripPlanDescription` (wymagane)
 - Typy:
   - `CreateTripPlanViewModel` (DTO formularza)
   - `PreferenceDto`

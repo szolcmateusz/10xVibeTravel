@@ -82,5 +82,5 @@
 - `location`: non-empty string with max length = 100
 - `preferences`: non-empty array of valid preferences strings
 - `number_of_people` > 0 and <= 100
-- `trip_plan_description` non-empty string with max length = 1000
+- `trip_plan_description` non-empty string
 - Editing allowed only if `ai_plan_accepted = false`
