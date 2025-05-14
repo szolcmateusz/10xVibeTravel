@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { firstValueFrom } from 'rxjs';
 import { ConfirmationDialogComponent } from '../components/confirmation-dialog/confirmation-dialog.component';
 
 interface ConfirmDialogData {
@@ -25,7 +26,7 @@ export class ConfirmationDialogService {
       width: '400px'
     });
 
-    return await dialogRef.afterClosed().toPromise() ?? false;
+    return await firstValueFrom(dialogRef.afterClosed()) ?? false;
   }
 
   showError(message: string): void {

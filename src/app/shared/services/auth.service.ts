@@ -45,7 +45,7 @@ export class AuthService {
       return { error };    
     } catch (error) {
       return { error: error as Error };
-    }finally {
+    } finally {
       this.isLoading.set(false);
     }
   }

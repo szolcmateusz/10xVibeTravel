@@ -99,7 +99,7 @@ export class TripPlanDetailComponent {
       try {
         await this.tripPlansService.deleteTripPlan(id);
         await this.router.navigate(['/trips']);
-      } catch (error: unknown) {
+      } catch {
         this.error.set('Failed to delete the trip plan. Please try again later.');
       }
     }

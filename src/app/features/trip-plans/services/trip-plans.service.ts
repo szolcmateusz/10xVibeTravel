@@ -57,7 +57,7 @@ export class TripPlansService {
           total: count ?? 0
         }
       };    
-    } catch (error) {
+    } catch {
       throw new Error('Failed to fetch trip plans');
     }
   }
@@ -246,10 +246,10 @@ export class TripPlansService {
       // Cache the preferences
       this.preferences.set(data as PreferenceDto[]);
       return data as PreferenceDto[];    
-    } catch (error) {
+    } catch {
       throw new Error('Failed to fetch preferences');
     }}
-
+  
   async deleteTripPlan(id: string): Promise<void> {
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
