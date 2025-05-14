@@ -58,6 +58,8 @@ Tworzy nowy rekord podróży (trip_plan) powiązany z zalogowanym użytkownikiem
 2. Zaimplementować logikę w `TripPlansService.createTripPlan(command)`.
 3. Walidacja:
   - `date_to` >= `date_from`
+  - różnica między `dateTo`, a `dateFrom` to maksymalnie 14 dni
+  - `dateTo` i `dateFrom` nie mogą być datami przeszłymi
   - `location`: maksymalna długość 100 znaków
   - `number_of_people`: > 0 oraz <= 100
   - `trip_plan_description`: wartość nie może być pusta

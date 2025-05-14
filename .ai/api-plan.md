@@ -79,6 +79,8 @@
 ## 4. Validation & Business Logic
 
 - Date range: `date_to >= date_from`
+- the difference between `dateTo` and `dateFrom` is a maximum of 14 days
+- `dateTo` and `dateFrom` cannot be past dates
 - `location`: non-empty string with max length = 100
 - `preferences`: non-empty array of valid preferences strings
 - `number_of_people` > 0 and <= 100

@@ -51,6 +51,8 @@ TripPlanFormRoute
   - klik „Generuj AI” → `openRouterService.generateTripPlan(...)` + sygnał `loadingAi`
 - Warunki walidacji:
   - `dateTo >= dateFrom`
+  - różnica między `dateTo`, a `dateFrom` to maksymalnie 14 dni
+  - `dateTo` i `dateFrom` nie mogą być datami przeszłymi
   - `location` (wymagane, max 100)
   - `numberOfPeople` (>=1,<=100)
   - co najmniej jedna preferencja
