@@ -9,6 +9,7 @@ import { CreateTripPlanCommand, PreferenceDto } from '../../../../api.types';
 import { PreferencesCheckboxListComponent } from '../preferences-checkbox-list/preferences-checkbox-list.component';
 import { SpinnerOverlayComponent } from '../../../shared/components/spinner-overlay/spinner-overlay.component';
 import { MaterialModule } from '../../../shared/material/material';
+import { MAX_TRIP_DURATION_DAYS } from '../consts';
 
 @Component({
   selector: 'trv-trip-plan-form',
@@ -29,8 +30,8 @@ export class TripPlanFormComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-
   public isAIGenerated = false;
+  protected readonly MAX_TRIP_DURATION_DAYS = MAX_TRIP_DURATION_DAYS;
 
   readonly form = this.formBuilder.group({
     dateFrom: ['', [Validators.required, this.dateNotInPastValidator]],
@@ -119,7 +120,19 @@ export class TripPlanFormComponent {
       return null;
     }
 
-    return new Date(dateTo) >= new Date(dateFrom) ? null : { dateToBeforeFrom: true };
+    const fromDate = new Date(dateFrom);
+    const toDate = new Date(dateTo);
+
+    if (toDate < fromDate) {
+      return { dateToBeforeFrom: true };
+    }
+
+    const durationInDays = Math.ceil((toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24));
+    if (durationInDays > MAX_TRIP_DURATION_DAYS) {
+      return { maxDurationExceeded: true };
+    }
+
+    return null;
   }
 
   private preferencesValidator(control: AbstractControl): ValidationErrors | null {

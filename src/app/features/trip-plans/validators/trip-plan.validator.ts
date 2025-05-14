@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CreateTripPlanCommand } from '../../../../api.types';
+import { MAX_TRIP_DURATION_DAYS } from '../consts';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,17 @@ export class TripPlanValidator {
 
   validateTripPlanCommand(command: CreateTripPlanCommand): void {
     // Validate dates
-    if (new Date(command.date_to) < new Date(command.date_from)) {
+    const fromDate = new Date(command.date_from);
+    const toDate = new Date(command.date_to);
+
+    if (toDate < fromDate) {
       throw new Error('End date must be after start date');
+    }
+
+    // Validate trip duration
+    const durationInDays = Math.ceil((toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24));
+    if (durationInDays > MAX_TRIP_DURATION_DAYS) {
+      throw new Error(`Trip duration cannot exceed ${MAX_TRIP_DURATION_DAYS} days`);
     }
 
     // Validate location
