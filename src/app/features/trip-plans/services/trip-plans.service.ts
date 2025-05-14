@@ -2,12 +2,14 @@ import { Injectable, inject, signal } from '@angular/core';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { TripPlanSummaryDto, TripPlanSummaryListDto, TripPlanDetailDto, CreateTripPlanCommand, PreferenceDto } from '../../../../api.types';
 import { SupabaseService } from '../../../shared/db/supabase.service';
+import { TripPlanValidator } from '../validators/trip-plan.validator';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TripPlansService {
   private readonly supabaseService = inject(SupabaseService);
+  private readonly validator = inject(TripPlanValidator);
   private readonly preferences = signal<PreferenceDto[]>([]);
   
   private get client(): SupabaseClient {
@@ -15,13 +17,7 @@ export class TripPlansService {
   }
 
   async getTripPlanSummaryList(page = 1, limit = 20): Promise<TripPlanSummaryListDto> {
-    // Validate input parameters
-    if (page < 1) {
-      throw new Error('Page must be greater than or equal to 1');
-    }
-    if (limit < 1 || limit > 100) {
-      throw new Error('Limit must be between 1 and 100');
-    }
+    this.validator.validatePagination(page, limit);
 
     const offset = (page - 1) * limit;
 
@@ -63,11 +59,7 @@ export class TripPlansService {
   }
 
   async getTripPlanById(id: string): Promise<TripPlanDetailDto> {
-    // Validate UUID format
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    if (!uuidRegex.test(id)) {
-      throw new Error('Invalid trip plan ID format');
-    }
+    this.validator.validateUuid(id);
 
     // Get the authenticated user's ID
     const { data: { user } } = await this.client.auth.getUser();
@@ -104,18 +96,7 @@ export class TripPlansService {
   }
 
   async createTripPlan(command: CreateTripPlanCommand): Promise<TripPlanDetailDto> {
-    // Input validation
-    if (new Date(command.date_to) < new Date(command.date_from)) {
-      throw new Error('End date must be after start date');
-    }
-
-    if (command.location.length > 100) {
-      throw new Error('Location must not exceed 100 characters');
-    }
-
-    if (command.number_of_people <= 0 || command.number_of_people > 100) {
-      throw new Error('Number of people must be between 1 and 100');
-    }
+    this.validator.validateTripPlanCommand(command);
 
     // Get the authenticated user's ID
     const { data: { user } } = await this.client.auth.getUser();
@@ -158,11 +139,8 @@ export class TripPlansService {
   }
 
   async updateTripPlan(id: string, command: CreateTripPlanCommand): Promise<TripPlanDetailDto> {
-    // Validate UUID format
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    if (!uuidRegex.test(id)) {
-      throw new Error('Invalid trip plan ID format');
-    }
+    this.validator.validateUuid(id);
+    this.validator.validateTripPlanCommand(command);
 
     // Get the authenticated user's ID
     const { data: { user } } = await this.client.auth.getUser();
@@ -171,19 +149,6 @@ export class TripPlansService {
     }
 
     try {
-      // Validate input
-      if (new Date(command.date_to) < new Date(command.date_from)) {
-        throw new Error('End date must be after start date');
-      }
-
-      if (command.location.length > 100) {
-        throw new Error('Location must not exceed 100 characters');
-      }
-
-      if (command.number_of_people <= 0 || command.number_of_people > 100) {
-        throw new Error('Number of people must be between 1 and 100');
-      }
-
       // Validate preferences exist in the preferences table
       if (command.preferences_list) {
         const preferences = command.preferences_list.split(';');
@@ -251,11 +216,7 @@ export class TripPlansService {
     }}
   
   async deleteTripPlan(id: string): Promise<void> {
-    // Validate UUID format
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    if (!uuidRegex.test(id)) {
-      throw new Error('Invalid trip plan ID format');
-    }
+    this.validator.validateUuid(id);
 
     // Get the authenticated user's ID
     const { data: { user } } = await this.client.auth.getUser();
