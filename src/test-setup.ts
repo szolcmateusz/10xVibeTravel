@@ -1,4 +1,5 @@
 // Global test setup for Vitest
+import 'zone.js';
 import '@angular/compiler';
 import { getTestBed } from '@angular/core/testing';
 import {
@@ -10,6 +11,9 @@ import {
 getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting(),
+  {
+    teardown: { destroyAfterEach: true }
+  }
 );
 
 // Add any global test setup you need here

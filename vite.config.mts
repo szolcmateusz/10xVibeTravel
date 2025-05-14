@@ -10,13 +10,18 @@ export default defineConfig(({ mode }) => {
     plugins: [
       angular(),
       
-    ],
-    test: {
+    ],  test: {
       globals: true,
       environment: 'jsdom',
       setupFiles: ['src/test-setup.ts'],
       include: ['**/*.spec.ts'],
       reporters: ['default'],
+      css: true,
+      environmentOptions: {
+        jsdom: {
+          resources: 'usable',
+        }
+      },
     },
     define: {
       'import.meta.vitest': mode !== 'production',
