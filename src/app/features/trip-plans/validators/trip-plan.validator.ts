@@ -27,12 +27,15 @@ export class TripPlanValidator {
     const fromDate = new Date(command.date_from);
     const toDate = new Date(command.date_to);
 
+    fromDate.setHours(0, 0, 0, 0);
+    toDate.setHours(0, 0, 0, 0);
+
     if (toDate < fromDate) {
       throw new Error('End date must be after start date');
     }
 
-    // Validate trip duration
-    const durationInDays = Math.ceil((toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24));
+    // Validate trip duration (including both start and end dates)
+    const durationInDays = Math.floor((toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
     if (durationInDays > MAX_TRIP_DURATION_DAYS) {
       throw new Error(`Trip duration cannot exceed ${MAX_TRIP_DURATION_DAYS} days`);
     }

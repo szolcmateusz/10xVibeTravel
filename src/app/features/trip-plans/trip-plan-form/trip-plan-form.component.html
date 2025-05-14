@@ -38,7 +38,8 @@
           <mat-datepicker #toPicker></mat-datepicker>          
           @if (form.get('dateTo')?.errors?.['required'] && form.get('dateTo')?.touched) {
             <mat-error>To date is required</mat-error>
-          }          
+          }
+          
           @if (form.get('dateTo')?.errors?.['dateToBeforeFrom']) {
             <mat-error>To date must be after from date</mat-error>
           }
@@ -46,7 +47,7 @@
             <mat-error>To date cannot be in the past</mat-error>
           }
           @if (form.get('dateTo')?.errors?.['maxDurationExceeded']) {
-            <mat-error>Trip duration cannot exceed {{ MAX_TRIP_DURATION_DAYS }} days</mat-error>
+            <mat-error>Trip duration cannot exceed {{ maxTripDurationDays }} days</mat-error>
           }
         </mat-form-field>
       </div>

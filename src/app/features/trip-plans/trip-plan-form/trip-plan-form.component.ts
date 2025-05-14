@@ -30,8 +30,9 @@ export class TripPlanFormComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+
   public isAIGenerated = false;
-  protected readonly MAX_TRIP_DURATION_DAYS = MAX_TRIP_DURATION_DAYS;
+  readonly maxTripDurationDays = MAX_TRIP_DURATION_DAYS;
 
   readonly form = this.formBuilder.group({
     dateFrom: ['', [Validators.required, this.dateNotInPastValidator]],
@@ -123,11 +124,15 @@ export class TripPlanFormComponent {
     const fromDate = new Date(dateFrom);
     const toDate = new Date(dateTo);
 
+    fromDate.setHours(0, 0, 0, 0);
+    toDate.setHours(0, 0, 0, 0);
+
     if (toDate < fromDate) {
       return { dateToBeforeFrom: true };
     }
 
-    const durationInDays = Math.ceil((toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24));
+    // Calculate full days (including both start and end dates)
+    const durationInDays = Math.floor((toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
     if (durationInDays > MAX_TRIP_DURATION_DAYS) {
       return { maxDurationExceeded: true };
     }
