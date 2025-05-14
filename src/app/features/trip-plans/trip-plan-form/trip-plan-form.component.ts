@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { signal, inject } from '@angular/core';
 import { TripPlansService } from '../services/trip-plans.service';
@@ -10,6 +10,10 @@ import { PreferencesCheckboxListComponent } from '../preferences-checkbox-list/p
 import { SpinnerOverlayComponent } from '../../../shared/components/spinner-overlay/spinner-overlay.component';
 import { MaterialModule } from '../../../shared/material/material';
 import { MAX_TRIP_DURATION_DAYS } from '../consts';
+import { dateNotInPastValidator } from '../validators/date-not-in-past.validator';
+import { dateToValidator } from '../validators/date-to.validator';
+import { preferencesValidator } from '../validators/preferences.validator';
+import { TripPlanFormControls } from './trip-plan-form.model';
 
 @Component({
   selector: 'trv-trip-plan-form',
@@ -23,7 +27,7 @@ import { MAX_TRIP_DURATION_DAYS } from '../consts';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TripPlanFormComponent {
+export class TripPlanFormComponent implements OnInit {
   private readonly tripPlansService = inject(TripPlansService);
   private readonly openRouterService = inject(OpenRouterService);
   private readonly dialogService = inject(ConfirmationDialogService);
@@ -34,14 +38,7 @@ export class TripPlanFormComponent {
   public isAIGenerated = false;
   readonly maxTripDurationDays = MAX_TRIP_DURATION_DAYS;
 
-  readonly form = this.formBuilder.group({
-    dateFrom: ['', [Validators.required, this.dateNotInPastValidator]],
-    dateTo: ['', [Validators.required, this.dateToValidator.bind(this), this.dateNotInPastValidator]],
-    location: ['', [Validators.required, Validators.maxLength(100)]],
-    numberOfPeople: [1, [Validators.required, Validators.min(1), Validators.max(100)]],
-    selectedPreferences: [[] as string[], [Validators.required, this.preferencesValidator]],
-    tripPlanDescription: ['', [Validators.required]]
-  });
+  readonly form: FormGroup<TripPlanFormControls>;
 
   readonly loadingAi = signal(false);
   readonly preferences = signal<PreferenceDto[]>([]);
@@ -49,18 +46,31 @@ export class TripPlanFormComponent {
   readonly loading = signal(true);
   readonly error = signal<string | null>(null);
 
-  get isReadyForAiGeneration(): boolean {
-    const formControls = this.form.controls;
-    return !!(
-      formControls.dateFrom.valid &&
-      formControls.dateTo.valid &&
-      formControls.location.valid &&
-      formControls.numberOfPeople.valid &&
-      formControls.selectedPreferences.valid
-    );
+  constructor() {
+    this.form = this.formBuilder.group({
+      dateFrom: ['', [Validators.required, dateNotInPastValidator]],
+      dateTo: ['', [Validators.required, dateNotInPastValidator]],
+      location: ['', [Validators.required, Validators.maxLength(100)]],
+      numberOfPeople: [1, [Validators.required, Validators.min(1), Validators.max(100)]],
+      selectedPreferences: [[] as string[], [Validators.required, preferencesValidator]],
+      tripPlanDescription: ['', [Validators.required]]
+    }) as FormGroup<TripPlanFormControls>;
+
+    // Set up dateFrom value changes subscription
+    this.form.get('dateFrom')?.valueChanges.subscribe(dateFrom => {
+      const dateToControl = this.form.get('dateTo');
+      if (dateToControl && dateFrom) {
+        dateToControl.setValidators([
+          Validators.required,
+          dateToValidator(dateFrom),
+          dateNotInPastValidator
+        ]);
+        dateToControl.updateValueAndValidity();
+      }
+    });
   }
 
-  constructor() {
+  ngOnInit(): void {
     this.init();
   }
 
@@ -96,53 +106,6 @@ export class TripPlanFormComponent {
     } catch {
       this.dialogService.showError('Failed to load preferences');
     }
-  }
-
-  private dateNotInPastValidator(control: AbstractControl): ValidationErrors | null {
-    const date = control.value;
-    if (!date) {
-      return null;
-    }
-
-    const selectedDate = new Date(date);
-    selectedDate.setHours(0, 0, 0, 0);
-    
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    return selectedDate >= today ? null : { dateInPast: true };
-  }
-
-  private dateToValidator(control: AbstractControl): ValidationErrors | null {
-    const dateTo = control.value;
-    const dateFrom = this.form?.get('dateFrom')?.value;
-
-    if (!dateFrom || !dateTo) {
-      return null;
-    }
-
-    const fromDate = new Date(dateFrom);
-    const toDate = new Date(dateTo);
-
-    fromDate.setHours(0, 0, 0, 0);
-    toDate.setHours(0, 0, 0, 0);
-
-    if (toDate < fromDate) {
-      return { dateToBeforeFrom: true };
-    }
-
-    // Calculate full days (including both start and end dates)
-    const durationInDays = Math.floor((toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-    if (durationInDays > MAX_TRIP_DURATION_DAYS) {
-      return { maxDurationExceeded: true };
-    }
-
-    return null;
-  }
-
-  private preferencesValidator(control: AbstractControl): ValidationErrors | null {
-    const preferences = control.value as string[];
-    return preferences.length > 0 ? null : { noPreferencesSelected: true };
   }
 
   onPreferencesChange(selectedPreferences: string[]): void {
@@ -211,5 +174,16 @@ export class TripPlanFormComponent {
     } catch {
       this.dialogService.showError(`Failed to ${this.isEdit() ? 'update' : 'create'} trip plan`);
     }
+  }
+
+  get isReadyForAiGeneration(): boolean {
+    const formControls = this.form.controls;
+    return !!(
+      formControls.dateFrom.valid &&
+      formControls.dateTo.valid &&
+      formControls.location.valid &&
+      formControls.numberOfPeople.valid &&
+      formControls.selectedPreferences.valid
+    );
   }
 }
