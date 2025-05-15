@@ -83,7 +83,7 @@ export class OpenRouterService {
     
     try {
       return content;
-    } catch (error) {
+    } catch {
       throw new Error('Invalid AI response format');
     }
   }
