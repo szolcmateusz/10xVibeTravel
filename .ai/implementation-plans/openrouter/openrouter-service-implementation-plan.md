@@ -59,7 +59,6 @@ Potencjalne scenariusze i strategie:
    - `RateLimitError`, retry po opóźnieniu wskazanym w nagłówkach.
 
 ## 6. Kwestie bezpieczeństwa
-- Przechowywanie klucza API w **EnvironmentService** (vars z Azure Static Web Apps, .env podczas lokalnego dev).
 - Użycie `HttpClient` z CORS whitelist.
 - Nie logować wrażliwych treści (API Key, prywatne dane użytkownika).
 - Ograniczyć wielkość payloadów (walidacja długości komunikatów).
@@ -69,7 +68,6 @@ Potencjalne scenariusze i strategie:
 
 1. **Konfiguracja środowiska**
    - Dodaj w `environment.ts` i `environment.prod.ts` pola `openRouterApiUrl` i `openRouterApiKey`.
-   - W Azure Static Web Apps skonfiguruj sekrety `OPENROUTER_API_KEY` i `OPENROUTER_API_URL`.
 2. **Model typu i schematy**
    - W `src/api.types.ts` zdefiniuj interfejsy i ZodSchema dla odpowiedzi:
    ```ts

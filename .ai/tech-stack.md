@@ -11,8 +11,5 @@
 ## AI
 - OpenRouter.ai – an API platform enabling the integration of artificial intelligence features, such as content generation or data analysis. It allows the use of AI models.
 
-## CI/CD
+## CI/CD/Hosting
 - Github Actions – a tool that automates CI/CD processes, enabling seamless code deployment, testing, and monitoring, allowing for quick responses to changes and maintaining high software quality.
-
-## Hosting
-- Azure Static Web Apps – a hosting service optimized for static applications, providing scalability, security, and easy integration with CI/CD systems, facilitating quick deployment and global access to the application.

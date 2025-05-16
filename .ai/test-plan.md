@@ -127,12 +127,12 @@ Główne cele procesu testowania to:
 
 *   **Środowisko deweloperskie (Local):** Używane przez deweloperów do kodowania i wstępnych testów jednostkowych. Frontend uruchamiany lokalnie, backend Supabase (lokalny CLI lub zdalny projekt dev).
 *   **Środowisko testowe/stagingowe (Test/Staging):**
-    *   Frontend: Azure Static Web Apps (dedykowana instancja/slot dla stagingu).
+    *   Frontend: Dedykowana instancja/slot dla stagingu, np. Azure Static Web Apps.
     *   Backend: Dedykowana instancja projektu Supabase dla celów testowych (z odizolowaną bazą danych, ewentualnie z danymi testowymi generowanymi skryptami).
     *   Integracja z OpenRouter.ai: Dostęp do API OpenRouter.ai (możliwe użycie kluczy testowych lub ograniczonego budżetu).
     *   Konfiguracja zbliżona do produkcyjnej, zarządzana przez GitHub Actions.
 *   **Środowisko produkcyjne (Production):**
-    *   Frontend: Azure Static Web Apps.
+    *   Frontend:  Dedykowana instancja/slot np. Azure Static Web Apps.
     *   Backend: Produkcyjna instancja projektu Supabase.
     *   Ograniczone testy dymne (smoke tests) po każdym wdrożeniu.
 

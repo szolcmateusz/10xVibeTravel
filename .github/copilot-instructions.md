@@ -12,9 +12,6 @@ VibeTravels is an application that enables planning engaging and interesting tri
 ## CI/CD
 - Github Actions – A tool that automates CI/CD processes, enabling seamless code deployment, testing, and monitoring, allowing for quick responses to changes and maintaining high software quality.
 
-## Hosting
-- Azure Static Web Apps – A hosting service optimized for static applications, providing scalability, security, and easy integration with CI/CD systems, facilitating quick deployment and global access to the application.
-
 ## FRONTEND
 
 ### General Guidlines

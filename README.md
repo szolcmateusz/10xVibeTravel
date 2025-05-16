@@ -16,8 +16,7 @@
 - **Frontend:** Angular 19, Angular Material Design 3, Tailwind CSS 4
 - **Backend:** Supabase
 - **AI Integration:** OpenRouter.ai
-- **CI/CD:** GitHub Actions
-- **Hosting:** Azure Static Web Apps
+- **CI/CD/Hosting:** GitHub Actions
 
 ## Getting Started Locally
 ### Prerequisites
